@@ -18,8 +18,11 @@ class GameRunner(object):
         super(GameRunner, self).__init__()
         pygame.init()
         self.infoObject = pygame.display.Info()
-        self.screen = pygame.display.set_mode((self.infoObject.current_w, self.infoObject.current_h), pygame.RESIZABLE)
-        self.bg = pygame.image.load('inside_out.jpg')
+        # screen_size = (self.infoObject.current_w, self.infoObject.current_h)
+        screen_size = (800, 600)
+        self.screen = pygame.display.set_mode(screen_size, pygame.RESIZABLE)
+        bg = pygame.image.load('inside_out.jpg')
+        self.bg = pygame.transform.scale(bg, screen_size)
         self.game_state = "SCREENSAVER"
         self.event_id = 1
 
@@ -96,7 +99,7 @@ class GameRunner(object):
 
     def screensaver(self):
         self.screen.fill((0, 0, 0))
-        self.screen.blit(self.bg, (-100, -100))
+        self.screen.blit(self.bg, (0, 0))
         pygame.display.flip()
 
     def run_games(self):
