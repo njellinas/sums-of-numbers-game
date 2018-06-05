@@ -21,7 +21,7 @@ def start_sums_game(screen, gamerunner):
 
     previous_time = -200
 
-    cardback = "emotion_recognition_game_data/question.jpg"
+    cardback = "sums_game_data/black.jpg"
 
     # Screen size
     w, h = pygame.display.get_surface().get_size()
@@ -118,7 +118,7 @@ def start_sums_game(screen, gamerunner):
     card3.draw(screen)
     cards.append(card3)
 
-    # CORRECT AND WRONG BOXES
+    # CORRECT AND WRONG BOX
     cory = int(h / 2 + (h - 0.2 * h - 2 * ch) / 4)
     corx = k - s
     corw = w - 2 * k + 2 * s
@@ -128,6 +128,25 @@ def start_sums_game(screen, gamerunner):
     cor.can_open = False
     cor.draw(screen)
     cards.append(cor)
+
+    # CORRECT SIGN
+    corsign_w = 130
+    corsign_h = 150
+    corsign_x = corx + corw + s
+    corsign_y = int(cory + (corh - corsign_h) / 2)
+    corsign = Card("correct_sign", cardback, "sums_game_data/correct.png",
+                   (corsign_x, corsign_y), (corsign_w, corsign_h), gamerunner)
+    corsign.can_open = False
+    corsign.draw(screen)
+    cards.append(corsign)
+
+    # WRONG SIGN
+    wrongsign_x = corx - s - corsign_w
+    wrongsign = Card("wrong_sign", cardback, "sums_game_data/wrong.png",
+                     (wrongsign_x, corsign_y), (corsign_w, corsign_h), gamerunner)
+    wrongsign.can_open = False
+    wrongsign.draw(screen)
+    cards.append(wrongsign)
 
     # PASS THE CARDHOLDERS POSITIONS AS PARAMETERS
     for card in cards:

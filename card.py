@@ -4,8 +4,8 @@ from pygame.locals import *
 
 from card_utils import redraw
 
-HOLDER1 = -3
-HOLDER2 = -2
+HOLDER1 = -5
+HOLDER2 = -4
 
 
 class Card(object):
@@ -22,6 +22,8 @@ class Card(object):
         self.cardholder = cardholder
         self.color = color
 
+        self.back = pygame.image.load(self.cardback)
+        self.back = pygame.transform.scale(self.back, (self.cardsize[0], self.cardsize[1]))
         self.img = pygame.image.load(self.picture)
         self.img = pygame.transform.scale(self.img, (self.cardsize[0], self.cardsize[1]))
         self.cardholder_positions = ((0, 0), (0, 0))
@@ -57,6 +59,23 @@ class Card(object):
         self.screen.blit(img, self.position)
         pygame.display.flip()
 
+    def toggle(self):
+        tmp = self.back
+        self.back = self.img
+        self.img = tmp
+
+    def toggle_hidden(self):
+        self.toggle()
+        self.chosen = not self.chosen
+
+    def hide_if_active(self):
+        if self.chosen:
+            self.toggle_hidden()
+        # TODO MAKE THE CARDS A DICTIONARY
+        # TODO ADD A SECOND 2 CARD
+        # TODO PUT RELATIVE SIZES ON THE CORRECT AND WRONG CARDS
+        # TODO MAKE RANDOM ORDER OF NUMBERS ON EACH GAME (BUT ONLY ONCE ON THE BEGINNING)
+
     def process_event(self, event, cards, screen, game_dict):
         global previous_time
         mouse_pos = pygame.mouse.get_pos()
@@ -89,10 +108,12 @@ class Card(object):
                     print('Cardholders full!')
                 if game_dict['cardholders_full'] == 2:  # Calculate sum and evaluate
                     if game_dict['current_sum'] == 4:
-                        cards[-1].color = (0, 200, 0)
+                        cards[-3].color = (0, 200, 0)
+                        cards[-2].toggle_hidden()
                         print('Correct!')
                     else:
-                        cards[-1].color = (200, 0, 0)
+                        cards[-3].color = (200, 0, 0)
+                        cards[-1].toggle_hidden()
                         print('Wrong!')
                 redraw(cards, screen)
             elif event.type == pygame.MOUSEBUTTONUP and event.button == 1 and self.chosen == True and self.can_open == True:
@@ -106,7 +127,9 @@ class Card(object):
                         cards[HOLDER2].chosen = False  # Card removed from second cardholder
                     game_dict['cardholders_full'] -= 1
                     game_dict['current_sum'] -= self.number
-                    cards[-1].color = (0, 0, 0)
+                    cards[-3].color = (0, 0, 0)
+                    cards[-2].hide_if_active()
+                    cards[-1].hide_if_active()
                     redraw(cards, screen)
                 else:
                     print('All cardholders empty!')
