@@ -2,13 +2,14 @@
 # -*- coding: utf-8 -*-
 import pygame
 from pygame.locals import *
+from random import shuffle
 import os
 import time
 
 from card import Card
 from card_utils import activate, redraw
 
-STOP_EMOREC = USEREVENT + 2
+STOP_SUMS = USEREVENT + 2
 global previous_time
 
 
@@ -17,7 +18,7 @@ def start_sums_game(screen, gamerunner):
     #    pygame.init()
     screen.fill((0, 0, 0))
     #   screen = create_screen()
-    pygame.display.set_caption('Emotion Recognition')
+    pygame.display.set_caption('Sums Game')
 
     previous_time = -200
 
@@ -26,45 +27,56 @@ def start_sums_game(screen, gamerunner):
     # Screen size
     w, h = pygame.display.get_surface().get_size()
     print(w, h)
+
+    # -------------------------- START GAME EVENT ---------------------------------#
+    gamerunner.send_event('athena.games.sums.start', 'sums_game')
+
+    # ----------------------------------- GAME PARAMETERS -------------------------#
+    number_of_top_cards = 6
+
     # Card width
-    cw = int(0.15 * w)
+    cw = int(0.12 * w)
     # Card height
     ch = int(0.3 * h)
     # Space between cards
-    s = int((0.9 * w - 5 * cw) / 6)
-    cards = []
+    s = int((0.9 * w - number_of_top_cards * cw) / (number_of_top_cards + 1))
+    cards = {}
 
-    card_posx = int(0.05 * w + s)  # + cw / 2)
+    card_posx_list = [0 for i in range(number_of_top_cards)]
+    card_posx_list[0] = int(0.05 * w + s)
+    for i in range(1, number_of_top_cards):
+        card_posx_list[i] = card_posx_list[i - 1] + cw + s
+    shuffle(card_posx_list)
     card_posy = 0.1 * h
     card = Card(0, "sums_game_data/zero.gif", cardback,
-                (card_posx, card_posy), (cw, ch), gamerunner)
+                (card_posx_list[0], card_posy), (cw, ch), gamerunner)
     card.draw(screen)
-    cards.append(card)
+    cards[0] = card
 
-    card_posx += cw + s
     card = Card(1, "sums_game_data/one.gif", cardback,
-                (card_posx, card_posy), (cw, ch), gamerunner)
+                (card_posx_list[1], card_posy), (cw, ch), gamerunner)
     card.draw(screen)
-    cards.append(card)
+    cards[1] = card
 
-    card_posx += cw + s
     card = Card(2, "sums_game_data/two.gif", cardback,
-                (card_posx, card_posy), (cw, ch), gamerunner)
+                (card_posx_list[2], card_posy), (cw, ch), gamerunner)
     card.draw(screen)
-    cards.append(card)
+    cards[2] = card
 
-    card_posx += cw + s
     card = Card(3, "sums_game_data/three.gif", cardback,
-                (card_posx, card_posy), (cw, ch), gamerunner)
+                (card_posx_list[3], card_posy), (cw, ch), gamerunner)
     card.draw(screen)
-    cards.append(card)
+    cards[3] = card
 
-    card_posx += cw + s
     card = Card(4, "sums_game_data/four.gif", cardback,
-                (card_posx, card_posy), (cw, ch), gamerunner)
+                (card_posx_list[4], card_posy), (cw, ch), gamerunner)
     card.draw(screen)
+    cards[4] = card
 
-    cards.append(card)
+    card = Card(2, "sums_game_data/two.gif", cardback,
+                (card_posx_list[5], card_posy), (cw, ch), gamerunner)
+    card.draw(screen)
+    cards[22] = card
 
     # SECOND LINE
     second_line_h = h - 0.1 * h - ch
@@ -82,14 +94,14 @@ def start_sums_game(screen, gamerunner):
                  (card2_posx, card2_posy), (cw2, ch2), gamerunner)
     card2.can_open = False
     card2.draw(screen)
-    cards.append(card2)
+    cards['plus'] = card2
 
     card2_posx = card2_posx + cw2 + 2 * s + cw
     card2 = Card("equal", "sums_game_data/equal.png", cardback,
                  (card2_posx, card2_posy), (cw2, ch2), gamerunner)
     card2.can_open = False
     card2.draw(screen)
-    cards.append(card2)
+    cards['equal'] = card2
 
     # DRAW CARDHOLDERS #
     cardholder1_posx = k
@@ -99,7 +111,7 @@ def start_sums_game(screen, gamerunner):
                        cardholder=True)
     cardholder1.can_open = False
     cardholder1.draw(screen)
-    cards.append(cardholder1)
+    cards['cardholder1'] = cardholder1
 
     cardholder2_posx = cardholder1_posx + cw + cw2 + 2 * s
     cardholder2_posy = cardholder1_posy
@@ -108,15 +120,15 @@ def start_sums_game(screen, gamerunner):
                        cardholder=True)
     cardholder2.can_open = False
     cardholder2.draw(screen)
-    cards.append(cardholder2)
+    cards['cardholder2'] = cardholder2
 
     # LAST CARD 4
     card3_posx = cardholder2_posx + cw + 2 * s + cw2
-    card3 = Card("equal", "sums_game_data/four.gif", cardback,
+    card3 = Card(4, "sums_game_data/four.gif", cardback,
                  (card3_posx, cardholder2_posy), (cw, ch), gamerunner)
     card3.can_open = False
     card3.draw(screen)
-    cards.append(card3)
+    cards['target_sum'] = card3
 
     # CORRECT AND WRONG BOX
     cory = int(h / 2 + (h - 0.2 * h - 2 * ch) / 4)
@@ -127,18 +139,18 @@ def start_sums_game(screen, gamerunner):
                (corx, cory), (corw, corh), gamerunner, cardholder=True, color=(0, 0, 0))
     cor.can_open = False
     cor.draw(screen)
-    cards.append(cor)
+    cards['correctwrong_box'] = cor
 
     # CORRECT SIGN
-    corsign_w = 130
-    corsign_h = 150
+    corsign_w = int(0.7 * cw2)
+    corsign_h = int(0.7 * ch2)
     corsign_x = corx + corw + s
     corsign_y = int(cory + (corh - corsign_h) / 2)
     corsign = Card("correct_sign", cardback, "sums_game_data/correct.png",
                    (corsign_x, corsign_y), (corsign_w, corsign_h), gamerunner)
     corsign.can_open = False
     corsign.draw(screen)
-    cards.append(corsign)
+    cards['correct'] = corsign
 
     # WRONG SIGN
     wrongsign_x = corx - s - corsign_w
@@ -146,11 +158,11 @@ def start_sums_game(screen, gamerunner):
                      (wrongsign_x, corsign_y), (corsign_w, corsign_h), gamerunner)
     wrongsign.can_open = False
     wrongsign.draw(screen)
-    cards.append(wrongsign)
+    cards['wrong'] = wrongsign
 
     # PASS THE CARDHOLDERS POSITIONS AS PARAMETERS
-    for card in cards:
-        card.cardholder_positions = ((cardholder1_posx, cardholder1_posy), (cardholder2_posx, cardholder2_posy))
+    for key in cards:
+        cards[key].cardholder_positions = ((cardholder1_posx, cardholder1_posy), (cardholder2_posx, cardholder2_posy))
 
     # GAME DICTIONARY
     game_dict = {'cardholders_full': 0, 'current_sum': 0}
@@ -165,12 +177,11 @@ def start_sums_game(screen, gamerunner):
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 return
-            if event.type == QUIT or event.type == STOP_EMOREC:
+            if event.type == QUIT or event.type == STOP_SUMS:
                 return
 
-            for card in cards:
-                card.process_event(event, cards, screen, game_dict=game_dict)
-                # print(game_dict)
+            for key in cards:
+                cards[key].process_event(event, cards, screen, game_dict=game_dict)
 
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 redraw(cards, screen)
