@@ -8,6 +8,8 @@ import time
 
 from card import Card
 from card_utils import activate, redraw
+from run_all_games import ENABLECARDS
+from sums_game_utils import HOLDER1, HOLDER2
 
 STOP_SUMS = USEREVENT + 2
 global previous_time
@@ -106,21 +108,21 @@ def start_sums_game(screen, gamerunner):
     # DRAW CARDHOLDERS #
     cardholder1_posx = k
     cardholder1_posy = second_line_h
-    cardholder1 = Card("cardholder1", "sums_game_data/equal.png", cardback,
+    cardholder1 = Card(HOLDER1, "sums_game_data/equal.png", cardback,
                        (cardholder1_posx, cardholder1_posy), (cw, ch), gamerunner,
                        cardholder=True)
     cardholder1.can_open = False
     cardholder1.draw(screen)
-    cards['cardholder1'] = cardholder1
+    cards[HOLDER1] = cardholder1
 
     cardholder2_posx = cardholder1_posx + cw + cw2 + 2 * s
     cardholder2_posy = cardholder1_posy
-    cardholder2 = Card("cardholder1", "sums_game_data/equal.png", cardback,
+    cardholder2 = Card(HOLDER2, "sums_game_data/equal.png", cardback,
                        (cardholder2_posx, cardholder2_posy), (cw, ch), gamerunner,
                        cardholder=True)
     cardholder2.can_open = False
     cardholder2.draw(screen)
-    cards['cardholder2'] = cardholder2
+    cards[HOLDER2] = cardholder2
 
     # LAST CARD 4
     card3_posx = cardholder2_posx + cw + 2 * s + cw2
@@ -165,7 +167,8 @@ def start_sums_game(screen, gamerunner):
         cards[key].cardholder_positions = ((cardholder1_posx, cardholder1_posy), (cardholder2_posx, cardholder2_posy))
 
     # GAME DICTIONARY
-    game_dict = {'cardholders_full': 0, 'current_sum': 0}
+    game_dict = {'cardholders_full': 0, 'current_sum': 0,
+                 'robot_wrong_sums': []}
 
     # add clock so that cpu does not go to 100%
     clock = pygame.time.Clock()

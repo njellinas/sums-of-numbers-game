@@ -28,14 +28,11 @@
 	<onevent name="athena.games.sums.reask2">
 		<call state="agent_speak" p:text="'Πρέπει να φτιάξεις και εσύ ένα για να ενισχυτής.'" p:agent="'system'"/>
 	</onevent>
-	<onevent name="athena.games.sums.childcorrect">
+	<onevent name="athena.games.sums.sumcorrect">
 		<call state="agent_speak" p:text="'Μπράβο! Είσαι πολύ καλός! Ευχαριστώ!'" p:agent="'system'"/>
 		<goto state="Wrong_Robot_Sum"/>
 	</onevent>
-	<onevent name="athena.games.sums.childwrong">
-		<send event="athena.games.sums.sumwrong"/>
-	</onevent>
-	<onevent name="athena.games.sums.retry">
+	<onevent name="athena.games.sums.sumwrong">
 		<call state="agent_speak" p:text="'Ωχ! Έγινε κάτι λάθος; Δεν πειράζει, ξαναπροσπάθησε.'" p:agent="'system'"/>
 		<send event="athena.games.sums.enablecards"/>
 	</onevent>
@@ -44,7 +41,7 @@
 <state id="Wrong_Robot_Sum" extends="Dialog">
 	<onentry>
 		<call state="agent_speak" p:text="'Τώρα θα το κάνω εγώ.'" p:agent="'system'"/>
-		<send event="athena.games.sums.robotsumwrong"/>
+		<send event="athena.games.sums.robotwrongsum"/>
 	</onentry>
 	<onevent name="athena.games.sums.robotsumready">
 		<call state="agent_speak" p:text="'Το έκανα σωστά;'" p:agent="'system'"/>
@@ -52,15 +49,20 @@
 	<onevent name="athena.games.sums.childwrong">
 		<call state="agent_speak" p:text="'Δε φαίνεται σωστό. Μπορείς να μου δείξεις το σωστό;'" p:agent="'system'"/>
 		<send event="athena.games.sums.childshowcorrect"/>
+		<goto state="Wrong_Robot_Sum_Child_Correcting"/>
 	</onevent>
 	<onevent name="athena.games.sums.childcorrect">
 		<send event="athena.games.sums.childshowcorrect"/>
+		<goto state="Wrong_Robot_Sum_Child_Correcting"/>
 	</onevent>
-	<onevent name="athena.games.sums.childnotcorrecting">
+</state>
+
+<state id="Wrong_Robot_Sum_Child_Correcting" extends="Dialog">
+	<onevent name="athena.games.sums.sumwrong">
 		<call state="agent_speak" p:text="'Πρέπει να μου δείξεις το σωστό για να ενισχυτής.'" p:agent="'system'"/>
 		<send event="athena.games.sums.childshowcorrect"/>
 	</onevent>
-	<onevent name="athena.games.sums.childcorrected">
+	<onevent name="athena.games.sums.sumcorrect">
 		<call state="agent_speak" p:text="'Μπράβο! Ευχαριστώ!'" p:agent="'system'"/>
 		<send event="athena.games.sums.waitforyourwelcome"/>
 	</onevent>
@@ -77,7 +79,7 @@
 <state id="Correct_Robot_Sum" extends="Dialog">
 	<onentry>
 		<call state="agent_speak" p:text="'Θα το κάνω πάλι εγώ.'" p:agent="'system'"/>
-		<send event="athena.games.sums.robotsumcorrect"/>
+		<send event="athena.games.sums.robotcorrectsum"/>
 	</onentry>
 	<onevent name="athena.games.sums.childcongrats" cond="event:text!=null">
 		<if cond="(event:text).equals('yes')">
@@ -89,16 +91,16 @@
 	</onevent>
 </state>
 
-<state id="Correct_Robot_Sum" extends="Dialog">
+<state id="Together_Sum" extends="Dialog">
 	<onentry>
 		<call state="agent_speak" p:text="'Έλα να κάνουμε ένα μαζί.'" p:agent="'system'"/>
 		<send event="athena.games.sums.togethersum"/>
 	</onentry>
-	<onevent name="athena.games.sums.childcorrect">
+	<onevent name="athena.games.sums.sumcorrect">
 		<call state="agent_speak" p:text="'Μπράβο!'" p:agent="'system'"/>
 		<goto state="Replay"/>
 	</onevent>
-	<onevent name="athena.games.sums.childwrong">
+	<onevent name="athena.games.sums.sumwrong">
 		<call state="agent_speak" p:text="'Ωχ! Έγινε κάτι λάθος; Δεν πειράζει, ξαναπροσπάθησε.'" p:agent="'system'"/>
 		<send event="athena.games.sums.childretry"/>
 	</onevent>

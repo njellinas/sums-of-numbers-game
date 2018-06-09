@@ -10,6 +10,16 @@ START_SUMS = USEREVENT + 1
 STOP_SUMS = USEREVENT + 2
 MODE = "ASD"
 
+# ----- EVENTS ----- #
+ENABLECARDS = USEREVENT + 3
+DISABLECARDS = USEREVENT + 4
+
+ROBOTWRONGSUM = USEREVENT + 5
+CHILDSHOWCORRECT = USEREVENT + 6
+ROBOTCORRECTSUM = USEREVENT + 7
+TOGETHERSUM = USEREVENT + 8
+CHILDRETRY = USEREVENT + 9
+
 
 class GameRunner(object):
     """docstring for GameRunner"""
@@ -75,6 +85,20 @@ class GameRunner(object):
                     pygame.event.post(pygame.event.Event(START_SUMS, {}))
                 elif event_name == "athena.games.sums.stop":
                     pygame.event.post(pygame.event.Event(STOP_SUMS, {}))
+                elif event_name == 'athena.games.sums.enablecards':
+                    pygame.event.post(pygame.event.Event(ENABLECARDS, {}))
+                elif event_name == 'athena.games.sums.disablecards':
+                    pygame.event.post(pygame.event.Event(DISABLECARDS, {}))
+                elif event_name == 'athena.games.sums.robotwrongsum':
+                    pygame.event.post(pygame.event.Event(ROBOTWRONGSUM, {}))
+                elif event_name == 'athena.games.sums.childshowcorrect':
+                    pygame.event.post(pygame.event.Event(CHILDSHOWCORRECT, {}))
+                elif event_name == 'athena.games.sums.robotcorrectsum':
+                    pygame.event.post(pygame.event.Event(ROBOTCORRECTSUM, {}))
+                elif event_name == 'athena.games.sums.togethersum':
+                    pygame.event.post(pygame.event.Event(TOGETHERSUM, {}))
+                elif event_name == 'athena.games.sums.childretry':
+                    pygame.event.post(pygame.event.Event(CHILDRETRY, {}))
 
     def send_event(self, event_name, sender, text=None):
         if not self.connected:

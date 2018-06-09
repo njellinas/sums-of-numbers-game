@@ -2,10 +2,11 @@ import time
 import pygame
 from pygame.locals import *
 
-from card_utils import redraw
-
-HOLDER1 = 'cardholder1'
-HOLDER2 = 'cardholder2'
+from card_utils import redraw, activate_numbers, deactivate_numbers
+from run_all_games import ENABLECARDS, DISABLECARDS, ROBOTWRONGSUM, CHILDSHOWCORRECT, ROBOTCORRECTSUM, TOGETHERSUM, \
+    CHILDRETRY
+from sums_game_utils import select_number, deselect_number, robot_make_wrong_sum, open_only_second_cardholder, \
+    robot_make_correct_sum, robot_make_first_choice
 
 
 class Card(object):
@@ -18,7 +19,7 @@ class Card(object):
         self.cardsize = cardsize
         self.gamerunner = gamerunner
         self.chosen = False
-        self.can_open = True
+        self.can_open = False  # Start deactivated
         self.cardholder = cardholder
         self.color = color
 
@@ -74,62 +75,38 @@ class Card(object):
 
     def process_event(self, event, cards, screen, game_dict):
         global previous_time
+
+        # --------------- EVENTS FOR ACTIVATING DEACTIVATING CARDS ---------#
+        if event.type == ENABLECARDS:
+            activate_numbers(cards=cards)
+        elif event.type == DISABLECARDS:
+            deactivate_numbers(cards=cards)
+
+        # -------- EVENTS FOR ROBOT SUM WRONG ---------- #
+        elif event.type == ROBOTWRONGSUM:
+            robot_make_wrong_sum(cards=cards, game_dict=game_dict, screen=screen)
+        elif event.type == CHILDSHOWCORRECT:
+            open_only_second_cardholder(cards=cards, game_dict=game_dict, screen=screen)
+
+        # -------- EVENTS FOR ROBOT SUM CORRECT ---------- #
+        elif event.type == ROBOTCORRECTSUM:
+            robot_make_correct_sum(cards=cards, game_dict=game_dict, screen=screen)
+
+        # -------- EVENTS FOR ROBOT SUM CORRECT ---------- #
+        elif event.type == TOGETHERSUM:
+            robot_make_first_choice(cards=cards, game_dict=game_dict, screen=screen)
+        elif event.type == CHILDRETRY:
+            open_only_second_cardholder(cards=cards, game_dict=game_dict, screen=screen)
+
+        # ----------------- EVENTS FOR SELECTING CARDS -------------- #
         mouse_pos = pygame.mouse.get_pos()
         inside = self.rect.collidepoint(mouse_pos)
         if inside:
-            if event.type == pygame.MOUSEBUTTONUP and event.button == 1 and self.chosen == False and self.can_open == True:
+            if event.type == pygame.MOUSEBUTTONUP and event.button == 1 and not self.chosen and self.can_open:
                 # WHEN THE USER SELECTS A CARD FROM THE TOP
                 previous_time = time.time()
-                if game_dict['cardholders_full'] == 0:
-                    self.chosen = True
-                    self.chose_number(0)
-                    cards[HOLDER1].chosen = True  # Card in first cardholder
-                    game_dict['cardholders_full'] += 1
-                    game_dict['current_sum'] += self.number
-                    # --- SELECT FIRST CARD --- #
-                    self.gamerunner.send_event('athena.games.sums.card_selected', 'sums_game', self.number)
-                elif game_dict['cardholders_full'] == 1 and cards[HOLDER1].chosen:
-                    self.chosen = True
-                    self.chose_number(1)
-                    cards[HOLDER2].chosen = True  # Card in second cardholder
-                    game_dict['cardholders_full'] += 1
-                    game_dict['current_sum'] += self.number
-                    self.gamerunner.send_event('athena.games.sums.card_selected', 'sums_game', self.number)
-                elif game_dict['cardholders_full'] == 1 and cards[HOLDER2].chosen:
-                    self.chosen = True
-                    self.chose_number(0)
-                    cards[HOLDER1].chosen = True  # Card in first cardholder
-                    game_dict['cardholders_full'] += 1
-                    game_dict['current_sum'] += self.number
-                    self.gamerunner.send_event('athena.games.sums.card_selected', 'sums_game', self.number)
-                else:
-                    print('Cardholders full!')
-                if game_dict['cardholders_full'] == 2:  # Calculate sum and evaluate
-                    if game_dict['current_sum'] == 4:
-                        cards['correctwrong_box'].color = (0, 200, 0)
-                        cards['correct'].toggle_hidden()
-                        self.gamerunner.send_event('athena.games.sums.sumcorrect', 'sums_game')
-                        print('Correct!')
-                    else:
-                        cards['correctwrong_box'].color = (200, 0, 0)
-                        cards['wrong'].toggle_hidden()
-                        self.gamerunner.send_event('athena.games.sums.sumwrong', 'sums_game')
-                        print('Wrong!')
-                redraw(cards, screen)
-            elif event.type == pygame.MOUSEBUTTONUP and event.button == 1 and self.chosen == True and self.can_open == True:
+                select_number(card=self, cards=cards, game_dict=game_dict, screen=screen)
+            elif event.type == pygame.MOUSEBUTTONUP and event.button == 1 and self.chosen and self.can_open:
+                # WHEN THE USER SELECTS A CARD FROM THE BOTTOM
                 previous_time = time.time()
-                if game_dict['cardholders_full'] > 0:
-                    self.chosen = False
-                    i = self.reset_number()
-                    if i == 0:
-                        cards[HOLDER1].chosen = False  # Card removed from first cardholder
-                    else:
-                        cards[HOLDER2].chosen = False  # Card removed from second cardholder
-                    game_dict['cardholders_full'] -= 1
-                    game_dict['current_sum'] -= self.number
-                    cards['correctwrong_box'].color = (0, 0, 0)
-                    cards['correct'].hide_if_active()
-                    cards['wrong'].hide_if_active()
-                    redraw(cards, screen)
-                else:
-                    print('All cardholders empty!')
+                deselect_number(card=self, cards=cards, game_dict=game_dict, screen=screen)
