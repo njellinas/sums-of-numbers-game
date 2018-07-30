@@ -31,7 +31,7 @@ class GameRunner(object):
         screen_size = (self.infoObject.current_w, self.infoObject.current_h)
         # screen_size = (1024, 768)
         self.screen = pygame.display.set_mode(screen_size, pygame.RESIZABLE)
-        bg = pygame.image.load('inside_out.jpg')
+        bg = pygame.image.load("sums_game_data/green.png")
         self.bg = pygame.transform.scale(bg, screen_size)
         self.game_state = "SCREENSAVER"
         self.event_id = 1
@@ -122,7 +122,7 @@ class GameRunner(object):
         self.event_id += 1
 
     def screensaver(self):
-        self.screen.fill((0, 0, 0))
+        self.screen.fill((81, 193, 206))
         self.screen.blit(self.bg, (0, 0))
         pygame.display.flip()
 
@@ -140,13 +140,13 @@ class GameRunner(object):
                     self.screen = pygame.display.set_mode((self.infoObject.current_w, self.infoObject.current_h),
                                                           pygame.NOFRAME)
                 if event.type == START_SUMS:
-                    sums_game.start_sums_game(self.screen, self)
+                    sums_game.start_sums_game(self.screen, self, wizard_mode=False)
                     self.screensaver()
                 if event.type == QUIT:
                     return
 
     def clear_screen(self):
-        self.screen.fill((0, 0, 0))
+        self.screen.fill((81, 193, 206))
         pygame.display.flip()
 
     def run_games_wizard(self):
@@ -165,7 +165,7 @@ class GameRunner(object):
                     keep = False
 
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_1:
-                    sums_game.start_sums_game(self.screen, self)
+                    sums_game.start_sums_game(self.screen, self, wizard_mode=True)
 
     def run_games_wizard_1(self):
         # self.screensaver_wizard()
@@ -188,7 +188,7 @@ class GameRunner(object):
 
 
 def main():
-    game_runner = GameRunner(True)
+    game_runner = GameRunner(wizard_mode=True)
 
 
 if __name__ == '__main__':

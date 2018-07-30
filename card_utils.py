@@ -1,5 +1,5 @@
 def redraw(cards, screen):
-    screen.fill((0, 0, 0))
+    screen.fill((81, 193, 206))
     for key in cards:
         cards[key].draw(screen)
 
@@ -15,10 +15,10 @@ def activate(cards, screen):
 
 
 def activate_numbers(cards):
-    for key in [0, 1, 2, 3, 4, 22]:
+    for key in [0, 1, 2, 3, 4]:
         cards[key].can_open = True
 
 
 def deactivate_numbers(cards):
-    for key in [0, 1, 2, 3, 4, 22]:
+    for key in [0, 1, 2, 3, 4]:
         cards[key].can_open = False

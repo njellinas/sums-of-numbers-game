@@ -15,16 +15,16 @@ STOP_SUMS = USEREVENT + 2
 global previous_time
 
 
-def start_sums_game(screen, gamerunner):
+def start_sums_game(screen, gamerunner, wizard_mode=True):
     global previous_time
     #    pygame.init()
-    screen.fill((0, 0, 0))
+    screen.fill((81, 193, 206))
     #   screen = create_screen()
     pygame.display.set_caption('Sums Game')
 
     previous_time = -200
 
-    cardback = "sums_game_data/black.jpg"
+    cardback = "sums_game_data/green.png"
 
     # Screen size
     w, h = pygame.display.get_surface().get_size()
@@ -34,7 +34,7 @@ def start_sums_game(screen, gamerunner):
     gamerunner.send_event('athena.games.sums.start', 'sums_game')
 
     # ----------------------------------- GAME PARAMETERS -------------------------#
-    number_of_top_cards = 6
+    number_of_top_cards = 5
 
     # Card width
     cw = int(0.12 * w)
@@ -50,35 +50,30 @@ def start_sums_game(screen, gamerunner):
         card_posx_list[i] = card_posx_list[i - 1] + cw + s
     shuffle(card_posx_list)
     card_posy = 0.1 * h
-    card = Card(0, "sums_game_data/zero.gif", cardback,
+    card = Card(0, "sums_game_data/zero.png", cardback,
                 (card_posx_list[0], card_posy), (cw, ch), gamerunner)
     card.draw(screen)
     cards[0] = card
 
-    card = Card(1, "sums_game_data/one.gif", cardback,
+    card = Card(1, "sums_game_data/one.png", cardback,
                 (card_posx_list[1], card_posy), (cw, ch), gamerunner)
     card.draw(screen)
     cards[1] = card
 
-    card = Card(2, "sums_game_data/two.gif", cardback,
+    card = Card(2, "sums_game_data/two.png", cardback,
                 (card_posx_list[2], card_posy), (cw, ch), gamerunner)
     card.draw(screen)
     cards[2] = card
 
-    card = Card(3, "sums_game_data/three.gif", cardback,
+    card = Card(3, "sums_game_data/three.png", cardback,
                 (card_posx_list[3], card_posy), (cw, ch), gamerunner)
     card.draw(screen)
     cards[3] = card
 
-    card = Card(4, "sums_game_data/four.gif", cardback,
+    card = Card(4, "sums_game_data/four.png", cardback,
                 (card_posx_list[4], card_posy), (cw, ch), gamerunner)
     card.draw(screen)
     cards[4] = card
-
-    card = Card(2, "sums_game_data/two.gif", cardback,
-                (card_posx_list[5], card_posy), (cw, ch), gamerunner)
-    card.draw(screen)
-    cards[22] = card
 
     # SECOND LINE
     second_line_h = h - 0.1 * h - ch
@@ -92,7 +87,7 @@ def start_sums_game(screen, gamerunner):
     # DRAW SYMBOLS
     card2_posx = k + cw + s
     card2_posy = second_line_h + int(0.5 * (cw - cw2))
-    card2 = Card("plus", "sums_game_data/plus.jpg", cardback,
+    card2 = Card("plus", "sums_game_data/plus.png", cardback,
                  (card2_posx, card2_posy), (cw2, ch2), gamerunner)
     card2.can_open = False
     card2.draw(screen)
@@ -126,7 +121,7 @@ def start_sums_game(screen, gamerunner):
 
     # LAST CARD 4
     card3_posx = cardholder2_posx + cw + 2 * s + cw2
-    card3 = Card(4, "sums_game_data/four.gif", cardback,
+    card3 = Card(4, "sums_game_data/four.png", cardback,
                  (card3_posx, cardholder2_posy), (cw, ch), gamerunner)
     card3.can_open = False
     card3.draw(screen)
@@ -138,7 +133,7 @@ def start_sums_game(screen, gamerunner):
     corw = w - 2 * k + 2 * s
     corh = int(ch + (h - 0.2 * h - 2 * ch) / 2)
     cor = Card("correct", "sums_game_data/equal.png", cardback,
-               (corx, cory), (corw, corh), gamerunner, cardholder=True, color=(0, 0, 0))
+               (corx, cory), (corw, corh), gamerunner, cardholder=True, color=(81, 193, 206))
     cor.can_open = False
     cor.draw(screen)
     cards['correctwrong_box'] = cor
@@ -173,19 +168,42 @@ def start_sums_game(screen, gamerunner):
     # add clock so that cpu does not go to 100%
     clock = pygame.time.Clock()
 
-    # EVENT PROCESSING
-    while 1:
-        clock.tick(30)
-        # process pygame events
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                return
-            if event.type == QUIT or event.type == STOP_SUMS:
-                return
+    if wizard_mode:
+        # EVENT PROCESSING
+        cards[0].can_open = True
+        cards[1].can_open = True
+        cards[2].can_open = True
+        cards[3].can_open = True
+        cards[4].can_open = True
+        while 1:
+            clock.tick(30)
+            # process pygame events
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                    return
+                if event.type == QUIT or event.type == STOP_SUMS:
+                    return
 
-            for key in cards:
-                cards[key].process_event(event, cards, screen, game_dict=game_dict)
+                for key in cards:
+                    cards[key].process_event_wizard(event, cards, screen, game_dict=game_dict)
 
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                redraw(cards, screen)
-                activate(cards, screen)
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    redraw(cards, screen)
+                    activate(cards, screen)
+    else:
+        # EVENT PROCESSING
+        while 1:
+            clock.tick(30)
+            # process pygame events
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                    return
+                if event.type == QUIT or event.type == STOP_SUMS:
+                    return
+
+                for key in cards:
+                    cards[key].process_event(event, cards, screen, game_dict=game_dict)
+
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    redraw(cards, screen)
+                    activate(cards, screen)
