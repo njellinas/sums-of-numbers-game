@@ -48,7 +48,7 @@ def start_sums_game(screen, gamerunner, wizard_mode=True):
     card_posx_list[0] = int(0.05 * w + s)
     for i in range(1, number_of_top_cards):
         card_posx_list[i] = card_posx_list[i - 1] + cw + s
-    shuffle(card_posx_list)
+    # shuffle(card_posx_list)
     card_posy = 0.1 * h
     card = Card(0, "sums_game_data/zero.png", cardback,
                 (card_posx_list[0], card_posy), (cw, ch), gamerunner)
