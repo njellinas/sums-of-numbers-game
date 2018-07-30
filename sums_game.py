@@ -7,7 +7,7 @@ import os
 import time
 
 from card import Card
-from card_utils import activate, redraw
+from card_utils import activate, redraw, number_to_string
 from run_all_games import ENABLECARDS
 from sums_game_utils import HOLDER1, HOLDER2
 
@@ -44,11 +44,15 @@ def start_sums_game(screen, gamerunner, wizard_mode=True):
     s = int((0.9 * w - number_of_top_cards * cw) / (number_of_top_cards + 1))
     cards = {}
 
+    # ------------------ TOP CARDS POSITIONS ------------------------ #
     card_posx_list = [0 for i in range(number_of_top_cards)]
     card_posx_list[0] = int(0.05 * w + s)
     for i in range(1, number_of_top_cards):
         card_posx_list[i] = card_posx_list[i - 1] + cw + s
+    
+    # ------------------------- SHUFFLE TOP CARDS -------------------------- #
     # shuffle(card_posx_list)
+
     card_posy = 0.1 * h
     card = Card(0, "sums_game_data/zero.png", cardback,
                 (card_posx_list[0], card_posy), (cw, ch), gamerunner)
@@ -117,7 +121,19 @@ def start_sums_game(screen, gamerunner, wizard_mode=True):
                        cardholder=True)
     cardholder2.can_open = False
     cardholder2.draw(screen)
+    cardholder2.chosen = True
     cards[HOLDER2] = cardholder2
+
+    # SECOND SUM CARD #
+    target_card_number = [0,1,2,3,4]
+    shuffle(target_card_number)
+    first_target = target_card_number[0]
+    card = Card(first_target, "sums_game_data/{}.png".format(number_to_string(first_target)), cardback,
+                (cardholder2_posx, cardholder2_posy), (cw, ch), gamerunner)
+    card.draw(screen)
+    card.can_open = False
+    card.in_cardholder = 1
+    cards['target'] = card
 
     # LAST CARD 4
     card3_posx = cardholder2_posx + cw + 2 * s + cw2
@@ -162,8 +178,8 @@ def start_sums_game(screen, gamerunner, wizard_mode=True):
         cards[key].cardholder_positions = ((cardholder1_posx, cardholder1_posy), (cardholder2_posx, cardholder2_posy))
 
     # GAME DICTIONARY
-    game_dict = {'cardholders_full': 0, 'current_sum': 0,
-                 'robot_wrong_sums': []}
+    game_dict = {'cardholders_full': 1, 'current_sum': first_target,
+                 'robot_wrong_sums': [], 'target_card_list': target_card_number[1:]}
 
     # add clock so that cpu does not go to 100%
     clock = pygame.time.Clock()

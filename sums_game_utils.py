@@ -58,7 +58,7 @@ def deselect_number(card, cards, game_dict, screen):
             cards[HOLDER2].chosen = False  # Card removed from second cardholder
         game_dict['cardholders_full'] -= 1
         game_dict['current_sum'] -= card.number
-        cards['correctwrong_box'].color = (0, 0, 0)
+        cards['correctwrong_box'].color = (81, 193, 206)
         cards['correct'].hide_if_active()
         cards['wrong'].hide_if_active()
         redraw(cards, screen)
