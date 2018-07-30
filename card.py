@@ -5,7 +5,7 @@ from pygame.locals import *
 from card_utils import redraw, activate_numbers, deactivate_numbers
 from run_all_games import ENABLECARDS, DISABLECARDS, ROBOTWRONGSUM, CHILDSHOWCORRECT, ROBOTCORRECTSUM, TOGETHERSUM, \
     CHILDRETRY
-from sums_game_utils import select_number, deselect_number, robot_make_wrong_sum, open_only_second_cardholder, \
+from sums_game_utils import select_number, deselect_number, robot_make_wrong_sum, open_only_first_cardholder, \
     robot_make_correct_sum, robot_make_first_choice
 
 HOLDER1 = 'cardholder1'
@@ -87,19 +87,20 @@ class Card(object):
 
         # -------- EVENTS FOR ROBOT SUM WRONG ---------- #
         elif event.type == ROBOTWRONGSUM:
-            robot_make_wrong_sum(cards=cards, game_dict=game_dict, screen=screen)
+            open_only_first_cardholder(card=self, cards=cards, game_dict=game_dict, screen=screen)
+            robot_make_wrong_sum(card=self, cards=cards, game_dict=game_dict, screen=screen)
         elif event.type == CHILDSHOWCORRECT:
-            open_only_second_cardholder(cards=cards, game_dict=game_dict, screen=screen)
+            open_only_first_cardholder(card=self, cards=cards, game_dict=game_dict, screen=screen)
 
         # -------- EVENTS FOR ROBOT SUM CORRECT ---------- #
         elif event.type == ROBOTCORRECTSUM:
-            robot_make_correct_sum(cards=cards, game_dict=game_dict, screen=screen)
+            robot_make_correct_sum(card=self, cards=cards, game_dict=game_dict, screen=screen)
 
         # -------- EVENTS FOR ROBOT SUM CORRECT ---------- #
         elif event.type == TOGETHERSUM:
-            robot_make_first_choice(cards=cards, game_dict=game_dict, screen=screen)
+            robot_make_first_choice(card=self, cards=cards, game_dict=game_dict, screen=screen)
         elif event.type == CHILDRETRY:
-            open_only_second_cardholder(cards=cards, game_dict=game_dict, screen=screen)
+            open_only_first_cardholder(card=self, cards=cards, game_dict=game_dict, screen=screen)
 
         # ----------------- EVENTS FOR SELECTING CARDS -------------- #
         mouse_pos = pygame.mouse.get_pos()

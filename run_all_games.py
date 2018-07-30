@@ -1,4 +1,5 @@
 import os
+import sys
 import sums_game
 import pygame
 from pygame.locals import *
@@ -60,7 +61,7 @@ class GameRunner(object):
 
     def connect_to_broker(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        ipaddress = '192.168.0.120'
+        ipaddress = '192.168.1.4'
         port = 1932
         # Connect the socket to the port where the server is listening
         server_address = (ipaddress, port)
@@ -188,7 +189,10 @@ class GameRunner(object):
 
 
 def main():
-    game_runner = GameRunner(wizard_mode=True)
+    if sys.argv[-1] == 'woz':
+        game_runner = GameRunner(wizard_mode=True)
+    else:
+        game_runner = GameRunner(wizard_mode=False)
 
 
 if __name__ == '__main__':

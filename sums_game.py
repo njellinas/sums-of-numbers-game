@@ -179,7 +179,7 @@ def start_sums_game(screen, gamerunner, wizard_mode=True):
 
     # GAME DICTIONARY
     game_dict = {'cardholders_full': 1, 'current_sum': first_target,
-                 'robot_wrong_sums': [], 'target_card_list': target_card_number[1:]}
+                 'current_second': first_target, 'target_card_list': target_card_number[1:]}
 
     # add clock so that cpu does not go to 100%
     clock = pygame.time.Clock()
