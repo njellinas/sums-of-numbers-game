@@ -21,6 +21,7 @@ class Card(object):
         self.cardsize = cardsize
         self.gamerunner = gamerunner
         self.chosen = False
+        self.chosen_once = False
         self.can_open = False  # Start deactivated
         self.cardholder = cardholder
         self.color = color
@@ -120,7 +121,7 @@ class Card(object):
         mouse_pos = pygame.mouse.get_pos()
         inside = self.rect.collidepoint(mouse_pos)
         if inside:
-            if event.type == pygame.MOUSEBUTTONUP and event.button == 1 and self.chosen == False and self.can_open == True:
+            if event.type == pygame.MOUSEBUTTONUP and event.button == 1 and self.chosen_once and self.chosen == False and self.can_open:
                 # cards[-1].clear()
                 # WHEN THE USER SELECTS A CARD FROM THE TOP
                 previous_time = time.time()
@@ -155,10 +156,11 @@ class Card(object):
                         cards['wrong'].toggle_hidden()
                         print('Wrong!')
                 redraw(cards, screen)
-            elif event.type == pygame.MOUSEBUTTONUP and event.button == 1 and self.chosen == True and self.can_open == True:
+            elif event.type == pygame.MOUSEBUTTONUP and event.button == 1 and self.chosen and self.can_open:
                 previous_time = time.time()
                 if game_dict['cardholders_full'] > 0:
                     self.chosen = False
+                    self.chosen_once = False
                     i = self.reset_number()
                     if i == 0:
                         cards[HOLDER1].chosen = False  # Card removed from first cardholder
@@ -172,3 +174,17 @@ class Card(object):
                     redraw(cards, screen)
                 else:
                     print('All cardholders empty!')
+            elif event.type == pygame.MOUSEBUTTONUP and event.button == 1 and self.chosen_once == False and self.can_open and not self.chosen and game_dict['cardholders_full'] < 2:
+                flag = False
+                for key in [0, 1, 2, 3, 4]:
+                    if cards[key].chosen_once:
+                        cards[key].chosen_once = False
+                        flag = True
+                        self.chosen_once = True
+                        redraw(cards, screen)
+                        game_dict['cardholderc'].position = (self.position[0]-5, self.position[1]-5)
+                        game_dict['cardholderc'].draw(screen)
+                if not flag:
+                    self.chosen_once = True
+                    game_dict['cardholderc'].position = (self.position[0]-5, self.position[1]-5)
+                    game_dict['cardholderc'].draw(screen)
