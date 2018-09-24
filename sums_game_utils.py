@@ -1,5 +1,6 @@
 import random
 import time
+import pygame.time
 
 from card_utils import deactivate_numbers, redraw, activate_numbers
 
@@ -90,25 +91,34 @@ def robot_make_wrong_sum(card, cards, game_dict, screen):
         second = game_dict['current_second']
         for i in card_numbers:
             if i - second != 0:
-                select_number(cards[i], cards, game_dict, screen)
+                select_number_once(cards[i], cards, game_dict, screen)
+                game_dict['robot_select'] = i
                 break
         deactivate_numbers(cards)
-        cards[0].gamerunner.send_event('athena.games.sums.robotsumready', 'sums_game')
+        cards[0].gamerunner.send_event('athena.games.sums.robotsumready', 'sums_game', text=str(i))
+
+
+def robot_put_wrong_number(card, cards, game_dict, screen):
+    if card.number == 'equal':
+        select_number(cards[game_dict['robot_select']], cards, game_dict, screen )
+        cards[0].gamerunner.send_event('athena.games.sums.robotwrongnumber', 'sums_game')
 
 
 def open_only_first_cardholder(card, cards, game_dict, screen):
     if card.number == 'equal':
-        card1 = game_dict['cardholder1_card']
-        card1.chosen = False
-        i = card1.reset_number()
-        cards[HOLDER1].chosen = False  # Card removed from first cardholder
-        game_dict['cardholders_full'] -= 1
-        game_dict['current_sum'] -= card1.number
-        cards['correctwrong_box'].color = (81, 193, 206)
-        cards['correct'].hide_if_active()
-        cards['wrong'].hide_if_active()
-        activate_numbers(cards)
-        redraw(cards, screen)
+        pygame.time.wait(500)
+        if cards[HOLDER1].chosen:
+            card1 = game_dict['cardholder1_card']
+            card1.chosen = False
+            i = card1.reset_number()
+            cards[HOLDER1].chosen = False  # Card removed from first cardholder
+            game_dict['cardholders_full'] -= 1
+            game_dict['current_sum'] -= card1.number
+            cards['correctwrong_box'].color = (81, 193, 206)
+            cards['correct'].hide_if_active()
+            cards['wrong'].hide_if_active()
+            activate_numbers(cards)
+            redraw(cards, screen)
 
 
 def robot_make_correct_sum(card, cards, game_dict, screen):

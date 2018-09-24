@@ -15,10 +15,10 @@ MODE = "ASD"
 ENABLECARDS = USEREVENT + 3
 DISABLECARDS = USEREVENT + 4
 
-ROBOTWRONGSUM = USEREVENT + 5
-CHILDSHOWCORRECT = USEREVENT + 6
-ROBOTCORRECTSUM = USEREVENT + 7
-TOGETHERSUM = USEREVENT + 8
+ROBOTWRONGSUMSELECT = USEREVENT + 5
+ROBOTWRONGSUMMAKE = USEREVENT + 6
+CHILDSHOWCORRECT = USEREVENT + 7
+ROBOTCORRECTSUM = USEREVENT + 8
 CHILDRETRY = USEREVENT + 9
 
 
@@ -81,7 +81,7 @@ class GameRunner(object):
                 data_arr = line.split()
                 event_name = data_arr[1]
                 self.game_state = "waiting"
-                if event_name == "athena.games.sums.start" and self.game_state != "SUMS":
+                if event_name == "athena.games.sums.showcards" and self.game_state != "SUMS":
                     self.game_state = "SUMS"
                     pygame.event.post(pygame.event.Event(START_SUMS, {}))
                 elif event_name == "athena.games.sums.stop":
@@ -90,14 +90,14 @@ class GameRunner(object):
                     pygame.event.post(pygame.event.Event(ENABLECARDS, {}))
                 elif event_name == 'athena.games.sums.disablecards':
                     pygame.event.post(pygame.event.Event(DISABLECARDS, {}))
-                elif event_name == 'athena.games.sums.robotwrongsum':
-                    pygame.event.post(pygame.event.Event(ROBOTWRONGSUM, {}))
+                elif event_name == 'athena.games.sums.robotwrongsum.select':
+                    pygame.event.post(pygame.event.Event(ROBOTWRONGSUMSELECT, {}))
+                elif event_name == 'athena.games.sums.robotwrongsum.make':
+                    pygame.event.post(pygame.event.Event(ROBOTWRONGSUMMAKE, {}))
                 elif event_name == 'athena.games.sums.childshowcorrect':
                     pygame.event.post(pygame.event.Event(CHILDSHOWCORRECT, {}))
                 elif event_name == 'athena.games.sums.robotcorrectsum':
                     pygame.event.post(pygame.event.Event(ROBOTCORRECTSUM, {}))
-                elif event_name == 'athena.games.sums.togethersum':
-                    pygame.event.post(pygame.event.Event(TOGETHERSUM, {}))
                 elif event_name == 'athena.games.sums.childretry':
                     pygame.event.post(pygame.event.Event(CHILDRETRY, {}))
 
