@@ -61,7 +61,7 @@ class GameRunner(object):
 
     def connect_to_broker(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        ipaddress = '192.168.1.4'
+        ipaddress = '192.168.0.127'
         port = 1932
         # Connect the socket to the port where the server is listening
         server_address = (ipaddress, port)

@@ -7,6 +7,21 @@ HOLDER1 = 'cardholder1'
 HOLDER2 = 'cardholder2'
 
 
+def select_number_once(card, cards, game_dict, screen):
+    flag = False
+    for key in [0, 1, 2, 3, 4]:
+        if cards[key].chosen_once:
+            cards[key].chosen_once = False
+            flag = True
+            card.chosen_once = True
+            redraw(cards, screen)
+            game_dict['cardholderc'].position = (card.position[0]-5, card.position[1]-5)
+            game_dict['cardholderc'].draw(screen)
+    if not flag:
+        card.chosen_once = True
+        game_dict['cardholderc'].position = (card.position[0]-5, card.position[1]-5)
+        game_dict['cardholderc'].draw(screen)
+
 def select_number(card, cards, game_dict, screen):
     if game_dict['cardholders_full'] == 0:
         card.chosen = True
@@ -52,6 +67,7 @@ def select_number(card, cards, game_dict, screen):
 def deselect_number(card, cards, game_dict, screen):
     if game_dict['cardholders_full'] > 0:
         card.chosen = False
+        card.chosen_once = False
         i = card.reset_number()
         if i == 0:
             cards[HOLDER1].chosen = False  # Card removed from first cardholder
