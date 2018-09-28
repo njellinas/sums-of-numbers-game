@@ -112,13 +112,43 @@ public class ZenoInteraction {
                     if (inputSplit[1].equals("athena.zeno.behavior")) {
                         inputFromBroker = in.readLine();
                         JSONObject jsonObj = new JSONObject(inputFromBroker);
-                        if (jsonObj.getString("name").equals("IROS_animations/FitInBox.anim.xml")) {
+                        if (jsonObj.getString("name").equals("IROS_animations/happiness.anim.xml")) {
                             // play the animation defined in the xml file
                             introAnim
                                     = MechIO.loadAnimation(jsonObj.getString("name"));
                             introJob = myPlayer.playAnimation(introAnim);
                             animLen = introAnim.getLength();
-//                        MechIO.sleep(500 + animLen);
+                        MechIO.sleep(500 + animLen);
+//                        out.println(String.format("EVENT athena.zeno.behavior.done %s\n",event.length()));
+//                        out.println(event);
+                        }
+                        else if (jsonObj.getString("name").equals("IROS_animations/sadness.anim.xml")) {
+                            // play the animation defined in the xml file
+                            introAnim
+                                    = MechIO.loadAnimation(jsonObj.getString("name"));
+                            introJob = myPlayer.playAnimation(introAnim);
+                            animLen = introAnim.getLength();
+                        MechIO.sleep(500 + animLen);
+//                        out.println(String.format("EVENT athena.zeno.behavior.done %s\n",event.length()));
+//                        out.println(event);
+                        }
+                        else if (jsonObj.getString("name").equals("IROS_animations/neutral.anim.xml")) {
+                            // play the animation defined in the xml file
+                            introAnim
+                                    = MechIO.loadAnimation(jsonObj.getString("name"));
+                            introJob = myPlayer.playAnimation(introAnim);
+                            animLen = introAnim.getLength();
+                        MechIO.sleep(500 + animLen);
+//                        out.println(String.format("EVENT athena.zeno.behavior.done %s\n",event.length()));
+//                        out.println(event);
+                        }
+                        else if (jsonObj.getString("name").equals("IROS_animations/FitInBox.anim.xml")) {
+                            // play the animation defined in the xml file
+                            introAnim
+                                    = MechIO.loadAnimation(jsonObj.getString("name"));
+                            introJob = myPlayer.playAnimation(introAnim);
+                            animLen = introAnim.getLength();
+                        MechIO.sleep(500 + animLen);
 //                        out.println(String.format("EVENT athena.zeno.behavior.done %s\n",event.length()));
 //                        out.println(event);
                         }

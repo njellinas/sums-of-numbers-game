@@ -5,17 +5,12 @@
 	xsi:schemaLocation="iristk.flow flow.xsd iristk.situated.SystemAgentFlow SystemAgentFlow.xsd">
 	
 	<import class="java.util.ArrayList"/>
-	<import class="iristk.app.data_collection.Animal"/>
-	<import class="iristk.app.data_collection.FarmFunctions"/>
 	<import class="java.util.Date"/>
 	
 	<param name="agent" type="iristk.situated.SystemAgentFlow"/>
-	<param name="animals" type="ArrayList"/>
-	<param name="available_objects" type="AvailableObjects"/>
 
 	<var name="child_gender" type="String" value="'male'"/>
 	<var name="temp" type="String" value="''"/>
-	<var name="language" type="String" value="GreekPhrases.LANG_GR"/>
 	
 	<var name="system" type="iristk.situated.SystemAgent" value="agent.getSystemAgent()"/> 
 	
@@ -33,11 +28,7 @@
 	 <!-- Whether to use furhat or avatar for the game. If using avatar value="'system'"-->
 	<var name="current_agent" type="String" value="'system'"/>	
 	<var name="text_to_speak" type="String"/>	
-	<var name="gender_str" type="String"/>	
-	
-	<var name="current_pantomime_state" type="String" value="'Pantomime_State_1'"/>	
-
-	<var name="current_nao_behavior" type="String"/>	
+	<var name="gender_str" type="String"/>		
 
 	<!-- MAIN FLOW -->
 
@@ -64,7 +55,9 @@
 		</if>
 		<call state="agent_speak" p:text="'Κάθε φορά που κάνεις κάτι σωστό θα σου χαμογελάω.'" p:agent="'system'"/>
 		<call state="zeno_animation" p:name="'IROS_animations/happiness.anim.xml'"/>
+		<wait msec="5000"/>
 		<call state="agent_speak" p:text="'Τι λες να ξεκινήσεις εσύ;'" p:agent="'system'"/>
+		<call state="zeno_animation" p:name="'IROS_animations/neutral.anim.xml'"/>
 	</onentry>
 	<onevent name="athena.games.sums.start.respond" cond="event:text!=null">
 		<if cond="(event:text).equals('yes')">
@@ -96,7 +89,8 @@
 			<call state="agent_speak" p:text="'Μπράβο! Είσαι πολύ καλή! Ευχαριστώ!'" p:agent="'system'"/>
 		</if>
 		<call state="zeno_animation" p:name="'IROS_animations/happiness.anim.xml'"/>
-		<goto state="Wrong_Robot_Sum"/>
+		<wait msec="5000"/>
+		<call state="zeno_animation" p:name="'IROS_animations/neutral.anim.xml'"/>
 	</onevent>
 	<onevent name="athena.games.sums.sumwrong">
 		<call state="agent_speak" p:text="'Ωχ! Έγινε κάτι λάθος; Δεν πειράζει, ξαναπροσπάθησε.'" p:agent="'system'"/>
@@ -114,11 +108,14 @@
 		<exec>temp = asString(event:text)</exec>
 		<call state="agent_speak" p:text="'Νομίζω ότι το σωστό είναι ο αριθμός ' + temp" p:agent="'system'"/>
 		<wait msec="500"/>
-		<send event="athena.games.sums.robotwrongsum.make"/>
+		<send event="athena.games.sums.robotsum.make"/>
 	</onevent>
 	<onevent name="athena.games.sums.robotwrongnumber">
 		<wait msec="500"/>
 		<call state="agent_speak" p:text="'Ωχ! Έκανα λάθος!'" p:agent="'system'"/>
+		<call state="zeno_animation" p:name="'IROS_animations/sadness.anim.xml'"/>
+		<wait msec="5000"/>
+		<call state="zeno_animation" p:name="'IROS_animations/neutral.anim.xml'"/>
 		<send event="athena.games.sums.enablecards"/>
 	</onevent>
 	<onevent name="athena.games.sums.sumwrong">
@@ -139,6 +136,27 @@
 	</onevent>
 </state>
 
+<state id="Correct_Robot_Sum" extends="Dialog">
+	<onentry>
+		<call state="agent_speak" p:text="'Σειρά μου τώρα. Ας δοκιμάσω εγώ ένα.'" p:agent="'system'"/>
+		<wait msec="500"/>
+		<send event="athena.games.sums.robotcorrectsum.select"/>
+	</onentry>
+	<onevent name="athena.games.sums.robotsumready">
+		<exec>temp = asString(event:text)</exec>
+		<call state="agent_speak" p:text="'Νομίζω ότι το σωστό είναι ο αριθμός ' + temp" p:agent="'system'"/>
+		<wait msec="500"/>
+		<send event="athena.games.sums.robotsum.make"/>
+	</onevent>
+	<onevent name="athena.games.sums.robotcorrectnumber">
+		<wait msec="500"/>
+		<call state="agent_speak" p:text="'Ναι! Το βρήκα!'" p:agent="'system'"/>
+		<call state="zeno_animation" p:name="'IROS_animations/happiness.anim.xml'"/>
+		<wait msec="5000"/>
+		<call state="zeno_animation" p:name="'IROS_animations/neutral.anim.xml'"/>
+		<send event="athena.games.sums.enablecards"/>
+	</onevent>
+</state>
 
 <state id="Replay" extends="Dialog">
 	<onentry>
@@ -146,7 +164,6 @@
 	</onentry>
 	<onevent name="athena.games.sums.replay.yes">
 		<call state="agent_speak" p:text="'Τέλεια, ας ξαναπαίξουμε.'" p:agent="'system'"/>
-		<call state="zeno_animation" p:name="'IROS_animations/happiness.anim.xml'"/>
 		<send event="athena.games.sums.stop"/>
 		<wait msec="500"/>
 		<send event="athena.games.sums.showcards"/>
@@ -170,6 +187,12 @@
 	<onevent name="athena.admin.zenohappy">
 		<call state="zeno_animation" p:name="'IROS_animations/happiness.anim.xml'"/>
 	</onevent>
+	<onevent name="athena.admin.zenosad">
+		<call state="zeno_animation" p:name="'IROS_animations/sadness.anim.xml'"/>
+	</onevent>
+	<onevent name="athena.admin.zenoneutral">
+		<call state="zeno_animation" p:name="'IROS_animations/neutral.anim.xml'"/>
+	</onevent>
 	<onevent name="athena.admin.zenomovement">
 		<call state="zeno_animation" p:name="'asdsad'"/>
 	</onevent>
@@ -182,8 +205,14 @@
 	<onevent name="athena.games.sums.start">
 		<goto state="Sums_Start"/>
 	</onevent>
+	<onevent name="athena.games.sums.childsum">
+		<goto state="Child_Sum"/>
+	</onevent>
 	<onevent name="athena.games.sums.gotorobotwrongsum">
 		<goto state="Wrong_Robot_Sum"/>
+	</onevent>
+	<onevent name="athena.games.sums.gotorobotcorrectsum">
+		<goto state="Correct_Robot_Sum"/>
 	</onevent>
 	<onevent name="athena.games.sums.gotoreplay">
 		<goto state="Replay"/>
@@ -191,19 +220,7 @@
 </state>
 	
 	<!-- CALLABLE STATES -->
-	
-	<state id="agent_attend">
-		<param name="agent"/>
-		<param name="location" type="iristk.situated.Location"/>
-		<param name="mode" default="'default'"/>
-		<param name="speed" default="'medium'"/>
-		<onentry>
-			<send event="action.gaze" p:location="location" p:agent="agent" p:mode="mode" p:speed="speed"/>
-			<return/>
-		</onentry>
-	</state>
 
-	
 	<state id="agent_speak">
 		<param name="text" help="The text to speak (can also be provided as a text node)"/>
 		<param name="agent" help="The text to speak (can also be provided as a text node)"/>
@@ -218,43 +235,7 @@
 			<return event="monitor.speech.done"/>
 		</onevent>
 	</state>
-	
-	<state id="agent_gesture">
-		<param name="name" help="The text to speak (can also be provided as a text node)"/>
-		<param name="agent" help="The text to speak (can also be provided as a text node)"/>
-		<var name="action"/>
-		<onentry>
-			<send event="action.gesture" 
-					p:name="name"
-					p:agent="agent"
-					bindId="action"/>
-		</onentry>
-		<onevent name="monitor.gesture.end">
-			<return event="monitor.gesture.end"/>
-		</onevent>
-	</state>
 
-	<state id="nao_behavior">
-		<param name="name" help="The text to speak (can also be provided as a text node)" default="null"/>
-		<param name="behavior" help="The text to speak (can also be provided as a text node)" default="null"/>
-		<var name="action"/>
-		<onentry>
-			<if cond="name!=null">
-				<send event="athena.nao.behavior" 
-						p:name="name"
-						bindId="action"/>			
-			<elseif cond="behavior!=null"/>
-				<send event="athena.nao.behavior" 
-						p:behavior="behavior"
-						bindId="action"/>					
-			</if>
-
-		</onentry>
-		<onevent name="athena.nao.behavior.done">
-			<return event="athena.nao.behavior.done"/>
-		</onevent>
-	</state>
-	
 	<state id="zeno_animation">
 		<param name="name" help="The text to speak (can also be provided as a text node)"/>
 		<var name="action"/>
@@ -262,10 +243,8 @@
 			<send event="athena.zeno.behavior" 
 					p:name="name"
 					bindId="action"/>
-		</onentry>
-   		<onevent name="athena.zeno.behavior.done">
 			<return/>
-		</onevent>
+		</onentry>
 	</state>
 	
 	<state id="zeno_movement">

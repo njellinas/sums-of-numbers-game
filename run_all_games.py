@@ -16,10 +16,10 @@ ENABLECARDS = USEREVENT + 3
 DISABLECARDS = USEREVENT + 4
 
 ROBOTWRONGSUMSELECT = USEREVENT + 5
-ROBOTWRONGSUMMAKE = USEREVENT + 6
-CHILDSHOWCORRECT = USEREVENT + 7
-ROBOTCORRECTSUM = USEREVENT + 8
-CHILDRETRY = USEREVENT + 9
+ROBOTSUMMAKE = USEREVENT + 6
+ROBOTCORRECTSUMSELECT = USEREVENT + 7
+CHILDRETRY = USEREVENT + 8
+RESETCARDHOLDER = USEREVENT + 9
 
 
 class GameRunner(object):
@@ -92,12 +92,12 @@ class GameRunner(object):
                     pygame.event.post(pygame.event.Event(DISABLECARDS, {}))
                 elif event_name == 'athena.games.sums.robotwrongsum.select':
                     pygame.event.post(pygame.event.Event(ROBOTWRONGSUMSELECT, {}))
-                elif event_name == 'athena.games.sums.robotwrongsum.make':
-                    pygame.event.post(pygame.event.Event(ROBOTWRONGSUMMAKE, {}))
-                elif event_name == 'athena.games.sums.childshowcorrect':
-                    pygame.event.post(pygame.event.Event(CHILDSHOWCORRECT, {}))
-                elif event_name == 'athena.games.sums.robotcorrectsum':
-                    pygame.event.post(pygame.event.Event(ROBOTCORRECTSUM, {}))
+                elif event_name == 'athena.games.sums.robotsum.make':
+                    pygame.event.post(pygame.event.Event(ROBOTSUMMAKE, {}))
+                elif event_name == 'athena.games.sums.robotcorrectsum.select':
+                    pygame.event.post(pygame.event.Event(ROBOTCORRECTSUMSELECT, {}))
+                elif event_name == 'athena.games.sums.resetcardholder':
+                    pygame.event.post(pygame.event.Event(RESETCARDHOLDER, {}))
                 elif event_name == 'athena.games.sums.childretry':
                     pygame.event.post(pygame.event.Event(CHILDRETRY, {}))
 

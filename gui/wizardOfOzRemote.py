@@ -103,19 +103,22 @@ class WizardOfOzRemote(object):
         Label(self.sumsTab, text="Master Switch").grid(row=7, column=col)
         self.add_button(self.sumsTab, row=8, column=col, text="Start", event="athena.games.sums.showcards")
         self.add_button(self.sumsTab, row=9, column=col, text="Stop", event="athena.games.sums.stop")
+        self.add_button(self.sumsTab, row=10, column=col, text="Reset 1st cardholder", event="athena.games.sums.childretry")
 
         col += 1
         Label(self.sumsTab, text="Goto State").grid(row=0, column=col)
         self.add_button(self.sumsTab, row=1, column=col, text="Idle state", event="athena.games.sums.idle")
         self.add_button(self.sumsTab, row=2, column=col, text="Introduction state", event="athena.games.sums.start")
+        self.add_button(self.sumsTab, row=2, column=col, text="Child sum state", event="athena.games.sums.childsum")
         self.add_button(self.sumsTab, row=3, column=col, text="Robot wrong sum state", event="athena.games.sums.gotorobotwrongsum")
-        self.add_button(self.sumsTab, row=4, column=col, text="Replay state", event="athena.games.sums.gotoreplay")
+        self.add_button(self.sumsTab, row=4, column=col, text="Robot correct sum state", event="athena.games.sums.gotorobotcorrectsum")
+        self.add_button(self.sumsTab, row=5, column=col, text="Replay state", event="athena.games.sums.gotoreplay")
 
         col += 1
         Label(self.sumsTab, text="Introduction State").grid(row=0, column=col)
-        self.add_button(self.sumsTab, row=1, column=col, text="Yes", event="athena.games.sums.start.respond",
+        self.add_button(self.sumsTab, row=1, column=col, text="Child said Yes", event="athena.games.sums.start.respond",
             event_text="yes")
-        self.add_button(self.sumsTab, row=2, column=col, text="No", event="athena.games.sums.start.respond",
+        self.add_button(self.sumsTab, row=2, column=col, text="Child said No", event="athena.games.sums.start.respond",
             event_text="no")
         
         col += 1
@@ -138,6 +141,8 @@ class WizardOfOzRemote(object):
         col += 1
         Label(self.sumsTab, text="Zeno controls").grid(row=0, column=col)
         self.add_button(self.sumsTab, row=1, column=col, text="happy", event="athena.admin.zenohappy")
+        self.add_button(self.sumsTab, row=2, column=col, text="sad", event="athena.admin.zenosad")
+        self.add_button(self.sumsTab, row=3, column=col, text="neutral", event="athena.admin.zenoneutral")
 
     ## RUN PROGRAM ##
     def run(self):

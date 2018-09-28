@@ -3,10 +3,9 @@ import pygame
 from pygame.locals import *
 
 from card_utils import redraw, activate_numbers, deactivate_numbers
-from run_all_games import ENABLECARDS, DISABLECARDS, ROBOTWRONGSUMSELECT, ROBOTWRONGSUMMAKE, CHILDSHOWCORRECT, ROBOTCORRECTSUM, \
-    CHILDRETRY
+from run_all_games import ENABLECARDS, DISABLECARDS, ROBOTWRONGSUMSELECT, ROBOTSUMMAKE, ROBOTCORRECTSUMSELECT, CHILDRETRY, RESETCARDHOLDER
 from sums_game_utils import select_number, deselect_number, robot_make_wrong_sum, open_only_first_cardholder, \
-    robot_make_correct_sum, robot_make_first_choice, select_number_once, robot_put_wrong_number
+    robot_make_correct_sum, robot_make_first_choice, select_number_once, robot_put_number, robot_put_correct_number
 
 HOLDER1 = 'cardholder1'
 HOLDER2 = 'cardholder2'
@@ -90,17 +89,20 @@ class Card(object):
         elif event.type == ROBOTWRONGSUMSELECT:
             open_only_first_cardholder(card=self, cards=cards, game_dict=game_dict, screen=screen)
             robot_make_wrong_sum(card=self, cards=cards, game_dict=game_dict, screen=screen)
-        elif event.type == ROBOTWRONGSUMMAKE:
-            robot_put_wrong_number(card=self, cards=cards, game_dict=game_dict, screen=screen)
-        elif event.type == CHILDSHOWCORRECT:
-            open_only_first_cardholder(card=self, cards=cards, game_dict=game_dict, screen=screen)
+        elif event.type == ROBOTSUMMAKE:
+            robot_put_number(card=self, cards=cards, game_dict=game_dict, screen=screen)
 
         # -------- EVENTS FOR ROBOT SUM CORRECT ---------- #
-        elif event.type == ROBOTCORRECTSUM:
+        elif event.type == ROBOTCORRECTSUMSELECT:
+            open_only_first_cardholder(card=self, cards=cards, game_dict=game_dict, screen=screen)
             robot_make_correct_sum(card=self, cards=cards, game_dict=game_dict, screen=screen)
 
-        # -------- EVENTS FOR ROBOT SUM CORRECT ---------- #
+        # -------- EVENTS FOR REPLAY ---------- #
         elif event.type == CHILDRETRY:
+            open_only_first_cardholder(card=self, cards=cards, game_dict=game_dict, screen=screen)
+        
+        # -------- GENERAL EVENTS ---------- #
+        elif event.type == RESETCARDHOLDER:
             open_only_first_cardholder(card=self, cards=cards, game_dict=game_dict, screen=screen)
 
         # ----------------- EVENTS FOR SELECTING CARDS -------------- #

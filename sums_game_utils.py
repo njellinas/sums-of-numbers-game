@@ -98,10 +98,14 @@ def robot_make_wrong_sum(card, cards, game_dict, screen):
         cards[0].gamerunner.send_event('athena.games.sums.robotsumready', 'sums_game', text=str(i))
 
 
-def robot_put_wrong_number(card, cards, game_dict, screen):
+def robot_put_number(card, cards, game_dict, screen):
     if card.number == 'equal':
         select_number(cards[game_dict['robot_select']], cards, game_dict, screen )
-        cards[0].gamerunner.send_event('athena.games.sums.robotwrongnumber', 'sums_game')
+        print(game_dict['current_sum'])
+        if game_dict['current_sum'] != 4:
+            cards[0].gamerunner.send_event('athena.games.sums.robotwrongnumber', 'sums_game')
+        else:
+            cards[0].gamerunner.send_event('athena.games.sums.robotcorrectnumber', 'sums_game')
 
 
 def open_only_first_cardholder(card, cards, game_dict, screen):
@@ -122,19 +126,21 @@ def open_only_first_cardholder(card, cards, game_dict, screen):
 
 
 def robot_make_correct_sum(card, cards, game_dict, screen):
-    sums = ['0_4', '1_3', '2_2', '4_0', '3_1']
-    for i in sums:
-        if i not in game_dict['robot_correct_sums']:
-            card1, card2 = i.split('_')
-            card1 = int(card1)
-            card2 = int(card2)
-            select_number(cards[card1], cards, game_dict, screen)
-            time.sleep(0.6)
-            select_number(cards[card2], cards, game_dict, screen)
-            game_dict['robot_correct_sums'].append(i)
-            break
-    deactivate_numbers(cards)
+    if card.number == 'equal':
+        card_numbers = [0, 1, 2, 3, 4]
+        second = game_dict['current_second']
+        for i in card_numbers:
+            if i + second == 4:
+                select_number_once(cards[i], cards, game_dict, screen)
+                game_dict['robot_select'] = i
+                break
+        deactivate_numbers(cards)
+        cards[0].gamerunner.send_event('athena.games.sums.robotsumready', 'sums_game', text=str(i))
 
+def robot_put_correct_number(card, cards, game_dict, screen):
+    if card.number == 'equal':
+        select_number(cards[game_dict['robot_select']], cards, game_dict, screen )
+        cards[0].gamerunner.send_event('athena.games.sums.robotcorrectnumber', 'sums_game')
 
 def robot_make_first_choice(card, cards, game_dict, screen):
     card_numbers = [0, 1, 2, 3, 4]
