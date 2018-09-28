@@ -90,7 +90,7 @@ def robot_make_wrong_sum(card, cards, game_dict, screen):
         random.shuffle(card_numbers)
         second = game_dict['current_second']
         for i in card_numbers:
-            if i - second != 0:
+            if i + second != 4:
                 select_number_once(cards[i], cards, game_dict, screen)
                 game_dict['robot_select'] = i
                 break
