@@ -10,7 +10,7 @@ class WizardOfOzRemote(object):
 
     def __init__(self):
         #Default settings
-        self.host = "192.168.0.127"
+        self.host = "192.168.2.8"
         self.port = 1932
 
         self.connect_to_broker()

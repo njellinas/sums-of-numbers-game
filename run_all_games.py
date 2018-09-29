@@ -1,26 +1,13 @@
 import os
 import sys
-import sums_game
+from sums_game import SumsGame
 import pygame
 from pygame.locals import *
 import socket
 import threading
 import json
-
-START_SUMS = USEREVENT + 1
-STOP_SUMS = USEREVENT + 2
-MODE = "ASD"
-
-# ----- EVENTS ----- #
-ENABLECARDS = USEREVENT + 3
-DISABLECARDS = USEREVENT + 4
-
-ROBOTWRONGSUMSELECT = USEREVENT + 5
-ROBOTSUMMAKE = USEREVENT + 6
-ROBOTCORRECTSUMSELECT = USEREVENT + 7
-CHILDRETRY = USEREVENT + 8
-RESETCARDHOLDER = USEREVENT + 9
-
+from events import *
+from config import cfg
 
 class GameRunner(object):
     """docstring for GameRunner"""
@@ -29,12 +16,13 @@ class GameRunner(object):
         super(GameRunner, self).__init__()
         pygame.init()
         self.infoObject = pygame.display.Info()
-        screen_size = (self.infoObject.current_w, self.infoObject.current_h)
-        # screen_size = (1024, 768)
+        if cfg['screen_size']:
+            screen_size = cfg['screen_size']
+        else:
+            screen_size = (self.infoObject.current_w, self.infoObject.current_h)
         self.screen = pygame.display.set_mode(screen_size, pygame.RESIZABLE)
-        bg = pygame.image.load("sums_game_data/green.png")
+        bg = pygame.image.load(cfg['cardback'])
         self.bg = pygame.transform.scale(bg, screen_size)
-        self.game_state = "SCREENSAVER"
         self.event_id = 1
 
         if not wizard_mode:
@@ -59,9 +47,10 @@ class GameRunner(object):
                 yield line
         return
 
+    # ------------- THREAD 1 ------------- #
     def connect_to_broker(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        ipaddress = '192.168.0.127'
+        ipaddress = '192.168.2.8'
         port = 1932
         # Connect the socket to the port where the server is listening
         server_address = (ipaddress, port)
@@ -76,7 +65,7 @@ class GameRunner(object):
         self.sock.sendall(message)
 
         for line in self.readlines(self.sock):
-            print line
+            print('line: ', line)
             if line.startswith("EVENT"):
                 data_arr = line.split()
                 event_name = data_arr[1]
@@ -123,31 +112,29 @@ class GameRunner(object):
         self.event_id += 1
 
     def screensaver(self):
-        self.screen.fill((81, 193, 206))
+        self.screen.fill(cfg['background_color'])
         self.screen.blit(self.bg, (0, 0))
         pygame.display.flip()
 
+    # ------------- THREAD 2 --------------- #
     def run_games(self):
         self.screensaver()
         clock = pygame.time.Clock()
 
-        keep = True
-        # gesture_recognition_game.start_gesture_game(self.screen)
+        sumsgame = SumsGame(cfg=cfg, screen=self.screen, gamerunner=self, wizard_mode=False)
 
-        while keep:
+        while True:
             clock.tick(30)
             for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_f:
-                    self.screen = pygame.display.set_mode((self.infoObject.current_w, self.infoObject.current_h),
-                                                          pygame.NOFRAME)
                 if event.type == START_SUMS:
-                    sums_game.start_sums_game(self.screen, self, wizard_mode=False)
+                    sumsgame.init_game()
                     self.screensaver()
+                # escape key
                 if event.type == QUIT:
                     return
 
     def clear_screen(self):
-        self.screen.fill((81, 193, 206))
+        self.screen.fill(cfg['background_color'])
         pygame.display.flip()
 
     def run_games_wizard(self):
@@ -167,25 +154,6 @@ class GameRunner(object):
 
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_1:
                     sums_game.start_sums_game(self.screen, self, wizard_mode=True)
-
-    def run_games_wizard_1(self):
-        # self.screensaver_wizard()
-
-        # farm_game.start_farm_game(self.screen, self)
-
-        self.screensaver_wizard()
-
-        # emotion_recognition_game.start_emotion_game(self.screen, self)
-
-        # self.screensaver_wizard()
-
-        # pantomime_game.start_pantomime_game(self.screen, self, game_type=MODE)
-
-        # self.screensaver_wizard()
-
-        # moving_in_game.start_moving_in(self.screen)
-
-        # self.screensaver_wizard()
 
 
 def main():

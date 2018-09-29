@@ -3,7 +3,7 @@ import pygame
 from pygame.locals import *
 
 from card_utils import redraw, activate_numbers, deactivate_numbers
-from run_all_games import ENABLECARDS, DISABLECARDS, ROBOTWRONGSUMSELECT, ROBOTSUMMAKE, ROBOTCORRECTSUMSELECT, CHILDRETRY, RESETCARDHOLDER
+from events import ENABLECARDS, DISABLECARDS, ROBOTWRONGSUMSELECT, ROBOTSUMMAKE, ROBOTCORRECTSUMSELECT, CHILDRETRY, RESETCARDHOLDER
 from sums_game_utils import select_number, deselect_number, robot_make_wrong_sum, open_only_first_cardholder, \
     robot_make_correct_sum, robot_make_first_choice, select_number_once, robot_put_number, robot_put_correct_number
 
