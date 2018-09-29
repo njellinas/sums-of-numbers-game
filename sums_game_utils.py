@@ -36,6 +36,7 @@ def select_number(card, cards, game_dict, screen):
         card.chosen = True
         card.chose_number(1)
         cards[HOLDER2].chosen = True  # Card in second cardholder
+        game_dict['user_card'] = card
         game_dict['cardholders_full'] += 1
         game_dict['current_sum'] += card.number
         card.gamerunner.send_event('athena.games.sums.card_selected', 'sums_game', card.number)
@@ -43,7 +44,7 @@ def select_number(card, cards, game_dict, screen):
         card.chosen = True
         card.chose_number(0)
         cards[HOLDER1].chosen = True  # Card in first cardholder
-        game_dict['cardholder1_card'] = card
+        game_dict['user_card'] = card
         game_dict['cardholders_full'] += 1
         game_dict['current_sum'] += card.number
         card.gamerunner.send_event('athena.games.sums.card_selected', 'sums_game', card.number)
@@ -82,20 +83,35 @@ def deselect_number(card, cards, game_dict, screen):
     else:
         print('All cardholders empty!')
 
-def open_only_first_cardholder(cards, game_dict, screen):
-    if cards[HOLDER1].chosen:
-        card1 = game_dict['cardholder1_card']
-        card1.chosen = False
-        card1.chosen_once = False
-        i = card1.reset_number()
-        cards[HOLDER1].chosen = False  # Card removed from first cardholder
-        game_dict['cardholders_full'] -= 1
-        game_dict['current_sum'] -= card1.number
-        cards['correctwrong_box'].color = (81, 193, 206)
-        cards['correct'].hide_if_active()
-        cards['wrong'].hide_if_active()
-        activate_numbers(cards)
-        redraw(cards, screen)
+def open_user_cardholder(cards, game_dict, screen):
+    if game_dict['frozen_cardholder'] == 1:
+        if cards[HOLDER2].chosen:
+            card = game_dict['user_card']
+            card.chosen = False
+            card.chosen_once = False
+            i = card.reset_number()
+            cards[HOLDER2].chosen = False  # Card removed from first cardholder
+            game_dict['cardholders_full'] -= 1
+            game_dict['current_sum'] -= card.number
+            cards['correctwrong_box'].color = (81, 193, 206)
+            cards['correct'].hide_if_active()
+            cards['wrong'].hide_if_active()
+            activate_numbers(cards)
+            redraw(cards, screen)
+    else:
+        if cards[HOLDER1].chosen:
+            card = game_dict['user_card']
+            card.chosen = False
+            card.chosen_once = False
+            i = card.reset_number()
+            cards[HOLDER1].chosen = False  # Card removed from first cardholder
+            game_dict['cardholders_full'] -= 1
+            game_dict['current_sum'] -= card.number
+            cards['correctwrong_box'].color = (81, 193, 206)
+            cards['correct'].hide_if_active()
+            cards['wrong'].hide_if_active()
+            activate_numbers(cards)
+            redraw(cards, screen)
 
 def robot_make_wrong_sum(cards, game_dict, screen):
     card_numbers = [0, 1, 2, 3, 4]
@@ -128,9 +144,10 @@ def robot_put_number(cards, game_dict, screen):
     else:
         cards[0].gamerunner.send_event('athena.games.sums.sumcorrect', 'sums_game', text='robot')
 
-def robot_make_first_choice(card, cards, game_dict, screen):
-    card_numbers = [0, 1, 2, 3, 4]
-    card = cards[random.choice(card_numbers)]
-    select_number(card, cards, game_dict, screen)
-    activate_numbers(cards)
-    card.can_open = False
+def get_playing_sums(codes):
+    code1 = codes[0]
+    code2 = codes[1]
+    tmp = {5: (0, 1), 105: (1, 1), 205: (2, 1), 305: (3, 1), 405: (4, 1),
+           1005: (0, 2), 1105: (1, 2), 1205: (2, 2), 1305: (3, 2), 1405: (4, 2)}
+    return tmp[code1], tmp[code2]
+

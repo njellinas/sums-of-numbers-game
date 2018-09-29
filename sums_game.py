@@ -5,6 +5,7 @@ from pygame.locals import *
 from random import shuffle
 import os
 import time
+import pickle
 
 from config import cfg
 from events import GAME_EVENT
@@ -22,9 +23,22 @@ class SumsGame(object):
         self.screen = screen
         self.gamerunner = gamerunner
         self.wizard_mode = wizard_mode
+        self.child_id = 1
     
     def init_game(self):
         global previous_time
+
+        # ------ Game related parameters -------- #
+        # Get sum1 and sum2 codes
+        with open(os.path.join(cfg['pickle_path'], 'child' + str(self.child_id) + '.pkl'), 'rb') as f:
+            d = pickle.load(f)
+        self.sum_codes = d['sums'][d['current_sum']]
+        # Get sum1 and sum2 tuples of the form (number, cardholder) where cardholder equals 1 or 2
+        sum1, sum2 = get_playing_sums(codes=self.sum_codes)
+        current_sum = sum1
+        print('Target card: {}, in cardholder: {}'.format(str(current_sum[0]), str(current_sum[1])))
+
+        # --------------------- Screen related parameters ------------------ #
         self.screen.fill(self.cfg['background_color'])
         pygame.display.set_caption('Sums Game')
         previous_time = -200
@@ -34,7 +48,7 @@ class SumsGame(object):
         w, h = pygame.display.get_surface().get_size()
         print('Screen size: ', w, h)
 
-        # ----------------------------------- GAME PARAMETERS -------------------------#
+        # ---------- Card parameters ---------#
         number_of_top_cards = 5
         # Card width
         cw = int(0.12 * w)
@@ -51,8 +65,6 @@ class SumsGame(object):
         card_posx_list[0] = int(0.05 * w + s)
         for i in range(1, number_of_top_cards):
             card_posx_list[i] = card_posx_list[i - 1] + cw + s
-        
-        # ------------------------- SHUFFLE TOP CARDS -------------------------- #
         # shuffle(card_posx_list)
 
         card_posy = 0.1 * h
@@ -114,7 +126,7 @@ class SumsGame(object):
                         cardholder=True)
         cardholder1.can_open = False
         cardholder1.draw(self.screen)
-        cards[HOLDER1] = cardholder1
+        
 
         cardholder2_posx = cardholder1_posx + cw + cw2 + 2 * s
         cardholder2_posy = cardholder1_posy
@@ -123,15 +135,23 @@ class SumsGame(object):
                         cardholder=True)
         cardholder2.can_open = False
         cardholder2.draw(self.screen)
-        cardholder2.chosen = True
+        
+        if current_sum[1] == 1:
+            cardholder1.chosen = True
+        else:
+            cardholder2.chosen = True
+
+        cards[HOLDER1] = cardholder1
         cards[HOLDER2] = cardholder2
 
         # SECOND SUM CARD #
-        target_card_number = [0,1,2,3,4]
-        shuffle(target_card_number)
-        first_target = target_card_number[0]
-        card = Card(first_target, "sums_game_data/{}.png".format(card_utils.number_to_string(first_target)), cardback,
-                    (cardholder2_posx, cardholder2_posy), (cw, ch), self.gamerunner)
+        first_target = current_sum[0]
+        if current_sum[1] == 1:
+            card = Card(first_target, "sums_game_data/{}.png".format(card_utils.number_to_string(first_target)), cardback,
+                        (cardholder1_posx, cardholder1_posy), (cw, ch), self.gamerunner)
+        else:
+            card = Card(first_target, "sums_game_data/{}.png".format(card_utils.number_to_string(first_target)), cardback,
+                        (cardholder2_posx, cardholder2_posy), (cw, ch), self.gamerunner)
         card.draw(self.screen)
         card.can_open = False
         card.in_cardholder = 1
@@ -193,8 +213,8 @@ class SumsGame(object):
         self.cards = cards
         self.cardholderc = cardholderc
         # GAME DICTIONARY
-        self.game_dict = {'cardholders_full': 1, 'current_sum': first_target,
-                        'current_second': first_target, 'target_card_list': target_card_number[1:],
+        self.game_dict = {'cardholders_full': 1, 'current_sum': current_sum[0],
+                        'current_second': current_sum[0], 'frozen_cardholder': current_sum[1],
                         'cardholderc': cardholderc, 'robot_select': None}
         # Only in wizard mode
         if self.wizard_mode:
@@ -204,21 +224,33 @@ class SumsGame(object):
     def end_game(self):
         pass
 
+    def end_turn(self):
+        with open(os.path.join(cfg['pickle_path'], 'child' + str(self.child_id) + '.pkl'), 'rb') as f:
+            d = pickle.load(f)
+        d['current_sum'] = (d['current_sum'] + 1) % 10
+        with open(os.path.join(cfg['pickle_path'], 'child' + str(self.child_id) + '.pkl'), 'wb') as f:
+            pickle.dump(obj=d, file=f)
+
     def process_game_event(self, event):
+        # General events
         if event.name == 'athena.games.sums.enablecards':
             card_utils.activate_numbers(self.cards)
         elif event.name == 'athena.games.sums.disablecards':
             card_utils.deactivate_numbers(self.cards)
+        # Card selection events
         elif event.name == 'athena.games.sums.robotwrongsum.select':
-            open_only_first_cardholder(self.cards, self.game_dict, self.screen)
+            open_user_cardholder(self.cards, self.game_dict, self.screen)
             robot_make_wrong_sum(self.cards, self.game_dict, self.screen)
         elif event.name == 'athena.games.sums.robotcorrectsum.select':
-            open_only_first_cardholder(self.cards, self.game_dict, self.screen)
+            open_user_cardholder(self.cards, self.game_dict, self.screen)
             robot_make_correct_sum(self.cards, self.game_dict, self.screen)
         elif event.name == 'athena.games.sums.robotsum.make':
             robot_put_number(self.cards, self.game_dict, self.screen)
         elif event.name == 'athena.games.sums.resetcardholder':
-            open_only_first_cardholder(self.cards, self.game_dict, self.screen)
+            open_user_cardholder(self.cards, self.game_dict, self.screen)
+        # Turn related events
+        elif event.name == 'athena.games.sums.endturn':
+            self.end_turn()
 
     def process_mouse_event(self):
         mouse_pos = pygame.mouse.get_pos()

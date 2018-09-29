@@ -11,3 +11,4 @@
 3) go to gui, and run python wizardOfOzRemote.py
 4) run python run_all_games.py
 5) compile and run the eclipse java script
+6) build and run the zeno maven project

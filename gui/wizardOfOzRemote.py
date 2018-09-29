@@ -103,7 +103,7 @@ class WizardOfOzRemote(object):
         Label(self.sumsTab, text="Master Switch").grid(row=7, column=col)
         self.add_button(self.sumsTab, row=8, column=col, text="Start", event="athena.games.sums.showcards")
         self.add_button(self.sumsTab, row=9, column=col, text="Stop", event="athena.games.sums.stop")
-        self.add_button(self.sumsTab, row=10, column=col, text="Reset 1st cardholder", event="athena.games.sums.childretry")
+        self.add_button(self.sumsTab, row=10, column=col, text="Reset cardholder", event="athena.games.sums.resetcardholder")
 
         col += 1
         Label(self.sumsTab, text="Goto State").grid(row=0, column=col)

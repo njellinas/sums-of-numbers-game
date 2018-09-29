@@ -8,4 +8,7 @@ cfg = {
 
     # Game related configurations
     'target_sum': 4,
+
+    # Saved game data related configurations
+    'pickle_path': 'child_data'
 }
