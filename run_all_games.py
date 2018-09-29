@@ -141,6 +141,7 @@ class GameRunner(object):
         clock = pygame.time.Clock()
 
         keep = True
+        sumsgame = SumsGame(cfg=cfg, screen=self.screen, gamerunner=self, wizard_mode=True)
 
         while keep:
             clock.tick(30)
@@ -153,7 +154,7 @@ class GameRunner(object):
                     keep = False
 
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_1:
-                    sums_game.start_sums_game(self.screen, self, wizard_mode=True)
+                    sumsgame.init_game()
 
 
 def main():

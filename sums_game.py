@@ -17,13 +17,11 @@ STOP_SUMS = USEREVENT + 2
 global previous_time
 
 class SumsGame(object):
-    def __init__(self, cfg, screen, gamerunner, wizard_mode=True):
+    def __init__(self, cfg, screen, gamerunner, wizard_mode=False):
         self.cfg = cfg
         self.screen = screen
         self.gamerunner = gamerunner
         self.wizard_mode = wizard_mode
-
-        self.init_game()
     
     def init_game(self):
         global previous_time
@@ -218,9 +216,6 @@ class SumsGame(object):
                     for key in cards:
                         cards[key].process_event_wizard(event, cards, self.screen, game_dict=game_dict)
 
-                    if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                        redraw(cards, self.screen)
-                        activate(cards, self.screen)
         else:
             # EVENT PROCESSING
             while 1:
@@ -234,7 +229,3 @@ class SumsGame(object):
 
                     for key in cards:
                         cards[key].process_event(event, cards, self.screen, game_dict=game_dict)
-
-                    if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                        redraw(cards, self.screen)
-                        activate(cards, self.screen)
