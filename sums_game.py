@@ -189,21 +189,25 @@ class SumsGame(object):
         for key in cards:
             cards[key].cardholder_positions = ((cardholder1_posx, cardholder1_posy), (cardholder2_posx, cardholder2_posy))
 
+        # ---- BIND TO OBJECT ---- #
+        self.cards = cards
+        self.cardholderc = cardholderc
         # GAME DICTIONARY
-        game_dict = {'cardholders_full': 1, 'current_sum': first_target,
-                    'current_second': first_target, 'target_card_list': target_card_number[1:],
-                    'cardholderc': cardholderc, 'robot_select': None}
+        self.game_dict = {'cardholders_full': 1, 'current_sum': first_target,
+                        'current_second': first_target, 'target_card_list': target_card_number[1:],
+                        'cardholderc': cardholderc, 'robot_select': None}
 
+    def event_processing(self):
         # add clock so that cpu does not go to 100%
         clock = pygame.time.Clock()
 
         if self.wizard_mode:
             # EVENT PROCESSING
-            cards[0].can_open = True
-            cards[1].can_open = True
-            cards[2].can_open = True
-            cards[3].can_open = True
-            cards[4].can_open = True
+            self.cards[0].can_open = True
+            self.cards[1].can_open = True
+            self.cards[2].can_open = True
+            self.cards[3].can_open = True
+            self.cards[4].can_open = True
             while 1:
                 clock.tick(30)
                 # process pygame events
@@ -213,11 +217,9 @@ class SumsGame(object):
                     if event.type == QUIT or event.type == STOP_SUMS:
                         return
 
-                    for key in cards:
-                        cards[key].process_event_wizard(event, cards, self.screen, game_dict=game_dict)
-
+                    for key in self.cards:
+                        self.cards[key].process_event_wizard(event, self.cards, self.screen, game_dict=self.game_dict)
         else:
-            # EVENT PROCESSING
             while 1:
                 clock.tick(30)
                 # process pygame events
@@ -227,5 +229,5 @@ class SumsGame(object):
                     if event.type == QUIT or event.type == STOP_SUMS:
                         return
 
-                    for key in cards:
-                        cards[key].process_event(event, cards, self.screen, game_dict=game_dict)
+                    for key in self.cards:
+                        self.cards[key].process_event(event, self.cards, self.screen, game_dict=self.game_dict)

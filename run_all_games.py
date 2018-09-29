@@ -128,6 +128,7 @@ class GameRunner(object):
             for event in pygame.event.get():
                 if event.type == START_SUMS:
                     sumsgame.init_game()
+                    sumsgame.event_processing()
                     self.screensaver()
                 # escape key
                 if event.type == QUIT:
@@ -155,6 +156,7 @@ class GameRunner(object):
 
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_1:
                     sumsgame.init_game()
+                    sumsgame.event_processing()
 
 
 def main():
