@@ -61,6 +61,7 @@
 
 <state id="Child_Sum" extends="Dialog">
 	<onentry>
+		<send event="athena.games.sums.playwithsum1"/>
 		<call state="agent_speak" p:text="'Σε παρακαλώ φτιάξε ένα εσύ να δω.'" p:agent="'system'"/>
 		<send event="athena.games.sums.enablecards"/>
 	</onentry>
@@ -92,6 +93,7 @@
 
 <state id="Wrong_Robot_Sum" extends="Dialog">
 	<onentry>
+		<send event="athena.games.sums.playwithsum2"/>
 		<call state="agent_speak" p:text="'Σειρά μου τώρα. Ας δοκιμάσω εγώ ένα.'" p:agent="'system'"/>
 		<exec>whosturn = "robot"</exec>
 		<wait msec="1000"/>
@@ -138,6 +140,7 @@
 
 <state id="Correct_Robot_Sum" extends="Dialog">
 	<onentry>
+		<send event="athena.games.sums.playwithsum2"/>
 		<call state="agent_speak" p:text="'Σειρά μου τώρα. Ας δοκιμάσω εγώ ένα.'" p:agent="'system'"/>
 		<wait msec="1000"/>
 		<send event="athena.games.sums.resetcardholder"/>
@@ -162,10 +165,12 @@
 
 <state id="Replay" extends="Dialog">
 	<onentry>
+		<send event="athena.games.sums.endturn"/>
 		<call state="agent_speak" p:text="'Θες να ξαναπαίξουμε;'" p:agent="'system'"/>
 	</onentry>
 	<onevent name="athena.games.sums.replay.yes">
 		<call state="agent_speak" p:text="'Τέλεια, ας ξαναπαίξουμε.'" p:agent="'system'"/>
+		<send event="athena.games.sums.doreplay"/>
 		<send event="athena.games.sums.stop"/>
 		<wait msec="500"/>
 		<send event="athena.games.sums.showcards"/>

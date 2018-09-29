@@ -24,9 +24,6 @@ class SumsGame(object):
         self.gamerunner = gamerunner
         self.wizard_mode = wizard_mode
         self.child_id = 1
-    
-    def init_game(self):
-        global previous_time
 
         # ------ Game related parameters -------- #
         # Get sum1 and sum2 codes
@@ -34,9 +31,13 @@ class SumsGame(object):
             d = pickle.load(f)
         self.sum_codes = d['sums'][d['current_sum']]
         # Get sum1 and sum2 tuples of the form (number, cardholder) where cardholder equals 1 or 2
-        sum1, sum2 = get_playing_sums(codes=self.sum_codes)
-        current_sum = sum1
-        print('Target card: {}, in cardholder: {}'.format(str(current_sum[0]), str(current_sum[1])))
+        self.sum1, self.sum2 = get_playing_sums(codes=self.sum_codes)
+        self.current_sum = self.sum1
+    
+    def init_game(self):
+        global previous_time
+
+        print('Target card: {}, in cardholder: {}'.format(str(self.current_sum[0]), str(self.current_sum[1])))
 
         # --------------------- Screen related parameters ------------------ #
         self.screen.fill(self.cfg['background_color'])
@@ -136,7 +137,7 @@ class SumsGame(object):
         cardholder2.can_open = False
         cardholder2.draw(self.screen)
         
-        if current_sum[1] == 1:
+        if self.current_sum[1] == 1:
             cardholder1.chosen = True
         else:
             cardholder2.chosen = True
@@ -145,8 +146,8 @@ class SumsGame(object):
         cards[HOLDER2] = cardholder2
 
         # SECOND SUM CARD #
-        first_target = current_sum[0]
-        if current_sum[1] == 1:
+        first_target = self.current_sum[0]
+        if self.current_sum[1] == 1:
             card = Card(first_target, "sums_game_data/{}.png".format(card_utils.number_to_string(first_target)), cardback,
                         (cardholder1_posx, cardholder1_posy), (cw, ch), self.gamerunner)
         else:
@@ -213,8 +214,8 @@ class SumsGame(object):
         self.cards = cards
         self.cardholderc = cardholderc
         # GAME DICTIONARY
-        self.game_dict = {'cardholders_full': 1, 'current_sum': current_sum[0],
-                        'current_second': current_sum[0], 'frozen_cardholder': current_sum[1],
+        self.game_dict = {'cardholders_full': 1, 'current_sum': self.current_sum[0],
+                        'current_second': self.current_sum[0], 'frozen_cardholder': self.current_sum[1],
                         'cardholderc': cardholderc, 'robot_select': None}
         # Only in wizard mode
         if self.wizard_mode:
@@ -225,11 +226,22 @@ class SumsGame(object):
         pass
 
     def end_turn(self):
+        print('Loading child ' + str(self.child_id) + ' data...')
         with open(os.path.join(cfg['pickle_path'], 'child' + str(self.child_id) + '.pkl'), 'rb') as f:
             d = pickle.load(f)
-        d['current_sum'] = (d['current_sum'] + 1) % 10
+        d['current_sum'] = (d['current_sum'] + 1) % 5
+        print('Saving child ' + str(self.child_id) + ' data...')
         with open(os.path.join(cfg['pickle_path'], 'child' + str(self.child_id) + '.pkl'), 'wb') as f:
             pickle.dump(obj=d, file=f)
+    
+    def read_new_sums_from_pickle(self):
+        print('Loading child ' + str(self.child_id) + ' data...')
+        with open(os.path.join(cfg['pickle_path'], 'child' + str(self.child_id) + '.pkl'), 'rb') as f:
+            d = pickle.load(f)
+        self.sum_codes = d['sums'][d['current_sum']]
+        # Get sum1 and sum2 tuples of the form (number, cardholder) where cardholder equals 1 or 2
+        self.sum1, self.sum2 = get_playing_sums(codes=self.sum_codes)
+        self.current_sum = self.sum1
 
     def process_game_event(self, event):
         # General events
@@ -251,6 +263,15 @@ class SumsGame(object):
         # Turn related events
         elif event.name == 'athena.games.sums.endturn':
             self.end_turn()
+        elif event.name == 'athena.games.sums.doreplay':
+            self.read_new_sums_from_pickle()
+        # Sums events
+        elif event.name == 'athena.games.sums.playwithsum1':
+            self.current_sum = self.sum1
+            self.init_game()
+        elif event.name == 'athena.games.sums.playwithsum2':
+            self.current_sum = self.sum2
+            self.init_game()
 
     def process_mouse_event(self):
         mouse_pos = pygame.mouse.get_pos()

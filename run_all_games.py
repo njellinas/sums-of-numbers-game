@@ -89,6 +89,16 @@ class GameRunner(object):
                     pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.sums.robotsum.make'))
                 elif event_name == 'athena.games.sums.resetcardholder':
                     pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.sums.resetcardholder'))
+                # Turn events
+                elif event_name == 'athena.games.sums.endturn':
+                    pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.sums.endturn'))
+                elif event_name == 'athena.games.sums.doreplay':
+                    pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.sums.doreplay'))
+                # Sums events
+                elif event_name == 'athena.games.sums.playwithsum1':
+                    pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.sums.playwithsum1'))
+                elif event_name == 'athena.games.sums.playwithsum2':
+                    pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.sums.playwithsum2'))
 
     def send_event(self, event_name, sender, text=None):
         if not self.connected:
