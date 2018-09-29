@@ -11,6 +11,7 @@
 
 	<var name="child_gender" type="String" value="'male'"/>
 	<var name="temp" type="String" value="''"/>
+	<var name="whosturn" type="String" value="'child'"/>
 	
 	<var name="system" type="iristk.situated.SystemAgent" value="agent.getSystemAgent()"/> 
 	
@@ -84,6 +85,7 @@
 	</onevent>
 	<onevent name="athena.games.sums.sumwrong">
 		<call state="agent_speak" p:text="'Ωχ! Έγινε κάτι λάθος; Δεν πειράζει, ξαναπροσπάθησε.'" p:agent="'system'"/>
+		<send event="athena.games.sums.resetcardholder"/>
 		<send event="athena.games.sums.enablecards"/>
 	</onevent>
 </state>
@@ -91,7 +93,10 @@
 <state id="Wrong_Robot_Sum" extends="Dialog">
 	<onentry>
 		<call state="agent_speak" p:text="'Σειρά μου τώρα. Ας δοκιμάσω εγώ ένα.'" p:agent="'system'"/>
-		<wait msec="500"/>
+		<exec>whosturn = "robot"</exec>
+		<wait msec="1000"/>
+		<send event="athena.games.sums.resetcardholder"/>
+		<wait msec="1000"/>
 		<send event="athena.games.sums.robotwrongsum.select"/>
 	</onentry>
 	<onevent name="athena.games.sums.robotsumready">
@@ -100,16 +105,21 @@
 		<wait msec="500"/>
 		<send event="athena.games.sums.robotsum.make"/>
 	</onevent>
-	<onevent name="athena.games.sums.robotwrongnumber">
-		<wait msec="500"/>
-		<call state="agent_speak" p:text="'Ωχ! Έκανα λάθος!'" p:agent="'system'"/>
-		<call state="zeno_animation" p:name="'IROS_animations/sadness.anim.xml'"/>
-		<wait msec="5000"/>
-		<call state="zeno_animation" p:name="'IROS_animations/neutral.anim.xml'"/>
-		<send event="athena.games.sums.enablecards"/>
-	</onevent>
 	<onevent name="athena.games.sums.sumwrong">
-		<send event="athena.games.sums.enablecards"/>
+		<if cond="whosturn.equals('robot')">
+			<wait msec="500"/>
+			<call state="agent_speak" p:text="'Ωχ! Έκανα λάθος!'" p:agent="'system'"/>
+			<call state="zeno_animation" p:name="'IROS_animations/sadness.anim.xml'"/>
+			<wait msec="5000"/>
+			<call state="zeno_animation" p:name="'IROS_animations/neutral.anim.xml'"/>
+			<send event="athena.games.sums.resetcardholder"/>
+			<exec>whosturn = "child"</exec>
+			<send event="athena.games.sums.enablecards"/>
+		<else/>
+			<call state="agent_speak" p:text="'Ωχ! Έγινε κάτι λάθος; Δεν πειράζει, ξαναπροσπάθησε.'" p:agent="'system'"/>
+			<send event="athena.games.sums.resetcardholder"/>
+			<send event="athena.games.sums.enablecards"/>
+		</if>
 	</onevent>
 	<onevent name="athena.games.sums.sumcorrect">
 		<call state="agent_speak" p:text="'Μπράβο! Ευχαριστώ για τη βοήθεια.'" p:agent="'system'"/>
@@ -129,7 +139,9 @@
 <state id="Correct_Robot_Sum" extends="Dialog">
 	<onentry>
 		<call state="agent_speak" p:text="'Σειρά μου τώρα. Ας δοκιμάσω εγώ ένα.'" p:agent="'system'"/>
-		<wait msec="500"/>
+		<wait msec="1000"/>
+		<send event="athena.games.sums.resetcardholder"/>
+		<wait msec="1000"/>
 		<send event="athena.games.sums.robotcorrectsum.select"/>
 	</onentry>
 	<onevent name="athena.games.sums.robotsumready">
@@ -138,7 +150,7 @@
 		<wait msec="500"/>
 		<send event="athena.games.sums.robotsum.make"/>
 	</onevent>
-	<onevent name="athena.games.sums.robotcorrectnumber">
+	<onevent name="athena.games.sums.sumcorrect">
 		<wait msec="500"/>
 		<call state="agent_speak" p:text="'Ναι! Το βρήκα!'" p:agent="'system'"/>
 		<call state="zeno_animation" p:name="'IROS_animations/happiness.anim.xml'"/>

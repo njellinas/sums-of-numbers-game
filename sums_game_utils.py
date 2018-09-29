@@ -53,13 +53,13 @@ def select_number(card, cards, game_dict, screen):
         if game_dict['current_sum'] == 4:
             cards['correctwrong_box'].color = (0, 200, 0)
             cards['correct'].toggle_hidden()
-            card.gamerunner.send_event('athena.games.sums.sumcorrect', 'sums_game')
+            card.gamerunner.send_event('athena.games.sums.sumcorrect', 'sums_game', text='child')
             deactivate_numbers(cards=cards)
             print('Correct!')
         else:
             cards['correctwrong_box'].color = (200, 0, 0)
             cards['wrong'].toggle_hidden()
-            card.gamerunner.send_event('athena.games.sums.sumwrong', 'sums_game')
+            card.gamerunner.send_event('athena.games.sums.sumwrong', 'sums_game', text='child')
             deactivate_numbers(cards=cards)
             print('Wrong!')
     redraw(cards, screen)
@@ -83,10 +83,10 @@ def deselect_number(card, cards, game_dict, screen):
         print('All cardholders empty!')
 
 def open_only_first_cardholder(cards, game_dict, screen):
-    pygame.time.wait(500)
     if cards[HOLDER1].chosen:
         card1 = game_dict['cardholder1_card']
         card1.chosen = False
+        card1.chosen_once = False
         i = card1.reset_number()
         cards[HOLDER1].chosen = False  # Card removed from first cardholder
         game_dict['cardholders_full'] -= 1
@@ -124,9 +124,9 @@ def robot_put_number(cards, game_dict, screen):
     select_number(cards[game_dict['robot_select']], cards, game_dict, screen )
     print(game_dict['current_sum'])
     if game_dict['current_sum'] != 4:
-        cards[0].gamerunner.send_event('athena.games.sums.robotwrongnumber', 'sums_game')
+        cards[0].gamerunner.send_event('athena.games.sums.sumwrong', 'sums_game', text='robot')
     else:
-        cards[0].gamerunner.send_event('athena.games.sums.robotcorrectnumber', 'sums_game')
+        cards[0].gamerunner.send_event('athena.games.sums.sumcorrect', 'sums_game', text='robot')
 
 def robot_make_first_choice(card, cards, game_dict, screen):
     card_numbers = [0, 1, 2, 3, 4]

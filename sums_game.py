@@ -217,7 +217,7 @@ class SumsGame(object):
             robot_make_correct_sum(self.cards, self.game_dict, self.screen)
         elif event.name == 'athena.games.sums.robotsum.make':
             robot_put_number(self.cards, self.game_dict, self.screen)
-        elif event.name == 'athena.games.sums.robotsum.resetcardholder':
+        elif event.name == 'athena.games.sums.resetcardholder':
             open_only_first_cardholder(self.cards, self.game_dict, self.screen)
 
     def process_mouse_event(self):
