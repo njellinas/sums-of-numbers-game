@@ -14,6 +14,7 @@ class GameRunner(object):
 
     def __init__(self, wizard_mode):
         super(GameRunner, self).__init__()
+        self.wizard_mode = wizard_mode
         pygame.init()
         self.infoObject = pygame.display.Info()
         if cfg['screen_size']:
@@ -33,7 +34,7 @@ class GameRunner(object):
             self.run_games()
         else:
             self.connected = False
-            self.run_games_wizard()
+            self.run_games()
 
     def readlines(self, sock, recv_buffer=4096, delim='\n'):
         buffer = ''
@@ -69,26 +70,25 @@ class GameRunner(object):
             if line.startswith("EVENT"):
                 data_arr = line.split()
                 event_name = data_arr[1]
-                self.game_state = "waiting"
-                if event_name == "athena.games.sums.showcards" and self.game_state != "SUMS":
-                    self.game_state = "SUMS"
+                # ----------- MAIN EVENTS ---------- #
+                if event_name == "athena.games.sums.showcards":
                     pygame.event.post(pygame.event.Event(START_SUMS, {}))
                 elif event_name == "athena.games.sums.stop":
                     pygame.event.post(pygame.event.Event(STOP_SUMS, {}))
+
+                # ------------ GAME EVENTS ---------- #
                 elif event_name == 'athena.games.sums.enablecards':
-                    pygame.event.post(pygame.event.Event(ENABLECARDS, {}))
+                    pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.sums.enablecards'))
                 elif event_name == 'athena.games.sums.disablecards':
-                    pygame.event.post(pygame.event.Event(DISABLECARDS, {}))
+                    pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.sums.disablecards'))
                 elif event_name == 'athena.games.sums.robotwrongsum.select':
-                    pygame.event.post(pygame.event.Event(ROBOTWRONGSUMSELECT, {}))
-                elif event_name == 'athena.games.sums.robotsum.make':
-                    pygame.event.post(pygame.event.Event(ROBOTSUMMAKE, {}))
+                    pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.sums.robotwrongsum.select'))
                 elif event_name == 'athena.games.sums.robotcorrectsum.select':
-                    pygame.event.post(pygame.event.Event(ROBOTCORRECTSUMSELECT, {}))
+                    pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.sums.robotcorrectsum.select'))
+                elif event_name == 'athena.games.sums.robotsum.make':
+                    pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.sums.robotsum.make'))
                 elif event_name == 'athena.games.sums.resetcardholder':
-                    pygame.event.post(pygame.event.Event(RESETCARDHOLDER, {}))
-                elif event_name == 'athena.games.sums.childretry':
-                    pygame.event.post(pygame.event.Event(CHILDRETRY, {}))
+                    pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.sums.resetcardholder'))
 
     def send_event(self, event_name, sender, text=None):
         if not self.connected:
@@ -116,55 +116,51 @@ class GameRunner(object):
         self.screen.blit(self.bg, (0, 0))
         pygame.display.flip()
 
+    def clear_screen(self):
+        self.screen.fill(cfg['background_color'])
+        pygame.display.flip()
+
     # ------------- THREAD 2 --------------- #
     def run_games(self):
         self.screensaver()
         clock = pygame.time.Clock()
 
-        sumsgame = SumsGame(cfg=cfg, screen=self.screen, gamerunner=self, wizard_mode=False)
-
+        sumsgame = SumsGame(cfg=cfg, screen=self.screen, gamerunner=self, wizard_mode=self.wizard_mode)
+        game_state = 'idle'
         while True:
             clock.tick(30)
             for event in pygame.event.get():
-                if event.type == START_SUMS:
-                    sumsgame.init_game()
-                    sumsgame.event_processing()
-                    self.screensaver()
-                # escape key
-                if event.type == QUIT:
-                    return
+                if self.wizard_mode:
+                    if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE and game_state == 'idle':
+                        sumsgame.init_game()
+                        game_state = 'running'
+                        continue
+                    if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE and game_state == 'running':
+                        sumsgame.end_game()
+                        self.clear_screen()
+                        game_state = 'idle'
+                        continue
+                    if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                        exit(0)
+                    if event.type == QUIT:
+                        return
+                else:
+                    if event.type == START_SUMS and game_state == 'idle':
+                        sumsgame.init_game()
+                        game_state = 'running'
+                    if event.type == STOP_SUMS and game_state == 'running':
+                        self.clear_screen()
+                        sumsgame.end_game()
+                        game_state = 'idle'
+                    if event.type == GAME_EVENT and game_state == 'running':
+                        sumsgame.process_game_event(event)
+                    if event.type == QUIT:
+                        return
+                if game_state == 'running' and event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+                    sumsgame.process_mouse_event()
 
-    def clear_screen(self):
-        self.screen.fill(cfg['background_color'])
-        pygame.display.flip()
-
-    def run_games_wizard(self):
-        clock = pygame.time.Clock()
-
-        keep = True
-        sumsgame = SumsGame(cfg=cfg, screen=self.screen, gamerunner=self, wizard_mode=True)
-
-        while keep:
-            clock.tick(30)
-            self.clear_screen()
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                    keep = False
-
-                if event.type == QUIT:
-                    keep = False
-
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_1:
-                    sumsgame.init_game()
-                    sumsgame.event_processing()
-
-
-def main():
+if __name__ == '__main__':
     if sys.argv[-1] == 'woz':
         game_runner = GameRunner(wizard_mode=True)
     else:
         game_runner = GameRunner(wizard_mode=False)
-
-
-if __name__ == '__main__':
-    main()

@@ -109,10 +109,10 @@ class WizardOfOzRemote(object):
         Label(self.sumsTab, text="Goto State").grid(row=0, column=col)
         self.add_button(self.sumsTab, row=1, column=col, text="Idle state", event="athena.games.sums.idle")
         self.add_button(self.sumsTab, row=2, column=col, text="Introduction state", event="athena.games.sums.start")
-        self.add_button(self.sumsTab, row=2, column=col, text="Child sum state", event="athena.games.sums.childsum")
-        self.add_button(self.sumsTab, row=3, column=col, text="Robot wrong sum state", event="athena.games.sums.gotorobotwrongsum")
-        self.add_button(self.sumsTab, row=4, column=col, text="Robot correct sum state", event="athena.games.sums.gotorobotcorrectsum")
-        self.add_button(self.sumsTab, row=5, column=col, text="Replay state", event="athena.games.sums.gotoreplay")
+        self.add_button(self.sumsTab, row=3, column=col, text="Child sum state", event="athena.games.sums.childsum")
+        self.add_button(self.sumsTab, row=4, column=col, text="Robot wrong sum state", event="athena.games.sums.gotorobotwrongsum")
+        self.add_button(self.sumsTab, row=5, column=col, text="Robot correct sum state", event="athena.games.sums.gotorobotcorrectsum")
+        self.add_button(self.sumsTab, row=6, column=col, text="Replay state", event="athena.games.sums.gotoreplay")
 
         col += 1
         Label(self.sumsTab, text="Introduction State").grid(row=0, column=col)

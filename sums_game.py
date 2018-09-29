@@ -7,11 +7,11 @@ import os
 import time
 
 from config import cfg
+from events import GAME_EVENT
 
 from card import Card
-from card_utils import activate, redraw, number_to_string
-from events import ENABLECARDS
-from sums_game_utils import HOLDER1, HOLDER2
+import card_utils
+from sums_game_utils import *
 
 STOP_SUMS = USEREVENT + 2
 global previous_time
@@ -130,7 +130,7 @@ class SumsGame(object):
         target_card_number = [0,1,2,3,4]
         shuffle(target_card_number)
         first_target = target_card_number[0]
-        card = Card(first_target, "sums_game_data/{}.png".format(number_to_string(first_target)), cardback,
+        card = Card(first_target, "sums_game_data/{}.png".format(card_utils.number_to_string(first_target)), cardback,
                     (cardholder2_posx, cardholder2_posy), (cw, ch), self.gamerunner)
         card.draw(self.screen)
         card.can_open = False
@@ -196,38 +196,50 @@ class SumsGame(object):
         self.game_dict = {'cardholders_full': 1, 'current_sum': first_target,
                         'current_second': first_target, 'target_card_list': target_card_number[1:],
                         'cardholderc': cardholderc, 'robot_select': None}
-
-    def event_processing(self):
-        # add clock so that cpu does not go to 100%
-        clock = pygame.time.Clock()
-
+        # Only in wizard mode
         if self.wizard_mode:
-            # EVENT PROCESSING
-            self.cards[0].can_open = True
-            self.cards[1].can_open = True
-            self.cards[2].can_open = True
-            self.cards[3].can_open = True
-            self.cards[4].can_open = True
-            while 1:
-                clock.tick(30)
-                # process pygame events
-                for event in pygame.event.get():
-                    if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                        return
-                    if event.type == QUIT or event.type == STOP_SUMS:
-                        return
+            for key in range(cfg['target_sum'] + 1):
+                self.cards[key].can_open = True
 
-                    for key in self.cards:
-                        self.cards[key].process_event_wizard(event, self.cards, self.screen, game_dict=self.game_dict)
-        else:
-            while 1:
-                clock.tick(30)
-                # process pygame events
-                for event in pygame.event.get():
-                    if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                        return
-                    if event.type == QUIT or event.type == STOP_SUMS:
-                        return
+    def end_game(self):
+        pass
 
-                    for key in self.cards:
-                        self.cards[key].process_event(event, self.cards, self.screen, game_dict=self.game_dict)
+    def process_game_event(self, event):
+        if event.name == 'athena.games.sums.enablecards':
+            card_utils.activate_numbers(self.cards)
+        elif event.name == 'athena.games.sums.disablecards':
+            card_utils.deactivate_numbers(self.cards)
+        elif event.name == 'athena.games.sums.robotwrongsum.select':
+            open_only_first_cardholder(self.cards, self.game_dict, self.screen)
+            robot_make_wrong_sum(self.cards, self.game_dict, self.screen)
+        elif event.name == 'athena.games.sums.robotcorrectsum.select':
+            open_only_first_cardholder(self.cards, self.game_dict, self.screen)
+            robot_make_correct_sum(self.cards, self.game_dict, self.screen)
+        elif event.name == 'athena.games.sums.robotsum.make':
+            robot_put_number(self.cards, self.game_dict, self.screen)
+        elif event.name == 'athena.games.sums.robotsum.resetcardholder':
+            open_only_first_cardholder(self.cards, self.game_dict, self.screen)
+
+    def process_mouse_event(self):
+        mouse_pos = pygame.mouse.get_pos()
+        for key, card in self.cards.iteritems():
+            if card.rect.collidepoint(mouse_pos):
+                self.on_card_selected(card)
+                return
+
+    def on_card_selected(self, card):
+        if card.chosen_once == False and card.can_open and not card.chosen and self.game_dict['cardholders_full'] < 2:
+            # user selects card for the first time
+            select_number_once(card=card, cards=self.cards, game_dict=self.game_dict, screen=self.screen)
+            if self.wizard_mode:
+                activate_numbers(self.cards)
+        elif card.chosen_once and card.chosen == False and card.can_open:
+            # user selects card for the second time (and card goes to bottom)
+            select_number(card=card, cards=self.cards, game_dict=self.game_dict, screen=self.screen)
+            if self.wizard_mode:
+                activate_numbers(self.cards)
+        elif card.chosen and card.can_open:
+            # user selects a card from the bottom (and card goes back up)
+            deselect_number(card=card, cards=self.cards, game_dict=self.game_dict, screen=self.screen)
+            if self.wizard_mode:
+                activate_numbers(self.cards)

@@ -14,16 +14,6 @@
 	
 	<var name="system" type="iristk.situated.SystemAgent" value="agent.getSystemAgent()"/> 
 	
-	<var name="listen_sloc" type="boolean"/>
-	
-	<var name="x" type="float"/>
-	<var name="y" type="float"/>
-	<var name="z" type="float"/>
-	<var name="xb" type="double"/>
-	<var name="yb" type="double"/>
-	<var name="zb" type="double"/>
-	
-	<var name="location" type="iristk.situated.Location"/>
 	 
 	 <!-- Whether to use furhat or avatar for the game. If using avatar value="'system'"-->
 	<var name="current_agent" type="String" value="'system'"/>	

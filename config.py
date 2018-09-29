@@ -6,4 +6,6 @@ cfg = {
     # Card related configurations
     'cardback': 'sums_game_data/green.png',
 
+    # Game related configurations
+    'target_sum': 4,
 }
