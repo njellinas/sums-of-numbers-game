@@ -25,12 +25,14 @@ class WizardOfOzRemote(object):
 
         #Create main tab in notebook
         self.sumsTab = self.noteBook.add_tab(text = "Sums Tab")
+        self.emorecTab = self.noteBook.add_tab(text = "Emorec Tab")
 
         # self.drawSettingsTab()
         self.sumsTab.focus()
         
         self.buttons = []
         self.addSumsTab()
+        self.addEmorecTab()
 
     def add_button(self, tab, text, event, row, column, event_text=None, options=None, x=None, y=None, z=None, big=None, behavior=None):
         if not big:
@@ -100,13 +102,13 @@ class WizardOfOzRemote(object):
         self.add_button(self.sumsTab, row=1, column=col, text="Male", event="athena.games.sums.male")
         self.add_button(self.sumsTab, row=2, column=col, text="Female", event="athena.games.sums.female")
 
-        Label(self.sumsTab, text="Master Switch").grid(row=7, column=col)
-        self.add_button(self.sumsTab, row=8, column=col, text="Start", event="athena.games.sums.showcards")
-        self.add_button(self.sumsTab, row=9, column=col, text="Stop", event="athena.games.sums.stop")
-        self.add_button(self.sumsTab, row=10, column=col, text="Reset cardholder", event="athena.games.sums.resetcardholder")
+        Label(self.sumsTab, text="Master Switch").grid(row=6, column=col)
+        self.add_button(self.sumsTab, row=7, column=col, text="Start", event="athena.games.sums.showcards")
+        self.add_button(self.sumsTab, row=8, column=col, text="Stop", event="athena.games.sums.stop")
+        self.add_button(self.sumsTab, row=9, column=col, text="Reset cardholder", event="athena.games.sums.resetcardholder")
 
         col += 1
-        Label(self.sumsTab, text="Goto State").grid(row=0, column=col)
+        Label(self.sumsTab, text="Switch States Manually").grid(row=0, column=col)
         self.add_button(self.sumsTab, row=1, column=col, text="Idle state", event="athena.games.sums.idle")
         self.add_button(self.sumsTab, row=2, column=col, text="Introduction state", event="athena.games.sums.start")
         self.add_button(self.sumsTab, row=3, column=col, text="Child sum state", event="athena.games.sums.childsum")
@@ -143,6 +145,27 @@ class WizardOfOzRemote(object):
         self.add_button(self.sumsTab, row=1, column=col, text="happy", event="athena.admin.zenohappy")
         self.add_button(self.sumsTab, row=2, column=col, text="sad", event="athena.admin.zenosad")
         self.add_button(self.sumsTab, row=3, column=col, text="neutral", event="athena.admin.zenoneutral")
+
+    def addEmorecTab(self):
+        col = 1
+        Label(self.emorecTab, text="Switch states manually").grid(row=0, column=col)
+        self.add_button(self.emorecTab, row=1, column=col, text="Emorec_1 - Happy", event="athena.games.emorec.gotoemorec1")
+        self.add_button(self.emorecTab, row=2, column=col, text="Emorec_2 - Happy card", event="athena.games.emorec.gotoemorec2")
+        self.add_button(self.emorecTab, row=3, column=col, text="Emorec_3 - Happy Zeno", event="athena.games.emorec.gotoemorec3")
+        self.add_button(self.emorecTab, row=4, column=col, text="Emorec_4 - Sad", event="athena.games.emorec.gotoemorec4")
+        self.add_button(self.emorecTab, row=5, column=col, text="Emorec_5 - Sad card", event="athena.games.emorec.gotoemorec5")
+        self.add_button(self.emorecTab, row=6, column=col, text="Emorec_6 - Sad Zeno", event="athena.games.emorec.gotoemorec6")
+
+        col += 1
+        Label(self.emorecTab, text="Card controls").grid(row=0, column=col)
+        self.add_button(self.emorecTab, row=1, column=col, text="Clear cards", event="athena.games.emorec.clearcards")
+        self.add_button(self.emorecTab, row=2, column=col, text="Show happiness", event="athena.games.emorec.showhappiness")
+        self.add_button(self.emorecTab, row=3, column=col, text="Show sadness", event="athena.games.emorec.showsadness")
+
+        col += 1
+        Label(self.emorecTab, text="Child behavior").grid(row=0, column=col)
+        self.add_button(self.emorecTab, row=1, column=col, text="Correct", event="athena.games.emorec.correct", event_text="yes")
+        self.add_button(self.emorecTab, row=2, column=col, text="Wrong", event="athena.games.emorec.correct", event_text="no")
 
     ## RUN PROGRAM ##
     def run(self):

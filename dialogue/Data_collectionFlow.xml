@@ -224,8 +224,126 @@
 	<onevent name="athena.games.sums.gotoreplay">
 		<goto state="Replay"/>
 	</onevent>
+	<onevent name="athena.games.emorec.gotoemorec1">
+		<goto state="Emorec_1"/>
+	</onevent>
+	<onevent name="athena.games.emorec.gotoemorec2">
+		<goto state="Emorec_2"/>
+	</onevent>
+	<onevent name="athena.games.emorec.gotoemorec3">
+		<goto state="Emorec_3"/>
+	</onevent>
+	<onevent name="athena.games.emorec.gotoemorec4">
+		<goto state="Emorec_4"/>
+	</onevent>
+	<onevent name="athena.games.emorec.gotoemorec5">
+		<goto state="Emorec_5"/>
+	</onevent>
+	<onevent name="athena.games.emorec.gotoemorec6">
+		<goto state="Emorec_6"/>
+	</onevent>
 </state>
+
+
+	<!-- EMOREC GAME MANAGED BY ZENO -->
 	
+	<state id="Emorec_1" extends="Dialog">
+		<onentry>
+			<send event="athena.games.emorec.clearcards"/>
+			<call state="agent_audio" p:audio="'C:\Users\kinect_user\Desktop\ENG wavs for emotions\Show+me+in+your+face+how+will+you+do+when+you+are+happy%3F.wav'" p:agent="'system'"/>
+		</onentry>
+		<onevent name="athena.games.emorec.correct" cond="event:text!=null">
+			<if cond="(event:text).equals('yes')">	
+			    <call state="agent_audio" p:audio="'C:\Users\kinect_user\Desktop\ENG wavs for emotions\Great%21+Well+Done%21.wav'" p:agent="'system'"/>
+			
+				<call state="zeno_animation" p:name="'IROS_animations/happiness.anim.xml'"/>			
+			<else/>
+				<goto state="Emorec_2"/>
+			</if>
+		</onevent>
+	</state>	
+
+	<state id="Emorec_2" extends="Dialog">
+		<onentry>
+			<send event="athena.games.emorec.showhappiness"/>
+			<call state="agent_audio" p:audio="'C:\Users\kinect_user\Desktop\ENG wavs for emotions\Look+at+the+card.+This+is+joy.+Can+you+show+me+how+you+are+happy%3F.wav'" p:agent="'system'"/>
+		</onentry>
+		<onevent name="athena.games.emorec.correct" cond="event:text!=null">
+			<if cond="(event:text).equals('yes')">	
+			    <call state="agent_audio" p:audio="'C:\Users\kinect_user\Desktop\ENG wavs for emotions\Great%21+Well+Done%21.wav'" p:agent="'system'"/>
+			
+				<call state="zeno_animation" p:name="'IROS_animations/happiness.anim.xml'"/>				
+			<else/>
+				<goto state="Emorec_3"/>
+			</if>
+		</onevent>
+	</state>	
+
+	<state id="Emorec_3" extends="Dialog">
+		<onentry>
+			<call state="agent_audio" p:audio="'C:\Users\kinect_user\Desktop\ENG wavs for emotions\Let+me+show+you+how+I+am+happy..wav'" p:agent="'system'"/>
+			<call state="zeno_animation" p:name="'IROS_animations/happiness.anim.xml'"/>
+		</onentry>
+		<onevent name="athena.games.emorec.correct" cond="event:text!=null">
+			<if cond="(event:text).equals('yes')">	
+			
+			    <call state="agent_audio" p:audio="'C:\Users\kinect_user\Desktop\ENG wavs for emotions\Great%21+Well+Done%21.wav'" p:agent="'system'"/>
+			
+				<call state="zeno_animation" p:name="'IROS_animations/happiness.anim.xml'"/>				
+			<else/>
+				<goto state="Emorec_4"/>
+			</if>
+		</onevent>
+	</state>	
+	
+	<state id="Emorec_4" extends="Dialog">
+		<onentry>
+			<send event="athena.games.emorec.clearcards"/>
+			<send event="athena.games.emorec.showsadness"/>
+			<call state="agent_audio" p:audio="'C:\Users\kinect_user\Desktop\ENG wavs for emotions\Show+me+in+your+face+how+will+you+do+when+you+are+sad%3F.wav'" p:agent="'system'"/>
+		</onentry>
+		<onevent name="athena.games.emorec.correct" cond="event:text!=null">
+			<if cond="(event:text).equals('yes')">	
+			    <call state="agent_audio" p:audio="'C:\Users\kinect_user\Desktop\ENG wavs for emotions\Great%21+Well+Done%21.wav'" p:agent="'system'"/>
+			
+				<call state="zeno_animation" p:name="'IROS_animations/happiness.anim.xml'"/>			
+			<else/>
+				<goto state="Emorec_5"/>
+			</if>
+		</onevent>
+	</state>	
+
+	<state id="Emorec_5" extends="Dialog">
+		<onentry>
+			<call state="agent_audio" p:audio="'C:\Users\kinect_user\Desktop\ENG wavs for emotions\Look+at+the+card.+This+is+sadness.+Can+you+show+me+how+you+are+sad%3F.wav'" p:agent="'system'"/>
+		</onentry>
+		<onevent name="athena.games.emorec.correct" cond="event:text!=null">
+			<if cond="(event:text).equals('yes')">	
+			    <call state="agent_audio" p:audio="'C:\Users\kinect_user\Desktop\ENG wavs for emotions\Great%21+Well+Done%21.wav'" p:agent="'system'"/>
+			
+				<call state="zeno_animation" p:name="'IROS_animations/happiness.anim.xml'"/>				
+			<else/>
+				<goto state="Emorec_6"/>
+			</if>
+		</onevent>
+	</state>	
+
+	<state id="Emorec_6" extends="Dialog">
+		<onentry>
+			<call state="agent_audio" p:audio="'C:\Users\kinect_user\Desktop\ENG wavs for emotions\Let+me+show+you+how+I+am+sad..wav'" p:agent="'system'"/>
+			<call state="zeno_animation" p:name="'IROS_animations/sadness.anim.xml'"/>
+		</onentry>
+		<onevent name="athena.games.emorec.correct" cond="event:text!=null">
+			<if cond="(event:text).equals('yes')">	
+			
+			    <call state="agent_audio" p:audio="'C:\Users\kinect_user\Desktop\ENG wavs for emotions\Great%21+Well+Done%21.wav'" p:agent="'system'"/>
+			
+				<call state="zeno_animation" p:name="'IROS_animations/happiness.anim.xml'"/>				
+		
+			</if>
+		</onevent>
+	</state>
+
 	<!-- CALLABLE STATES -->
 
 	<state id="agent_speak">

@@ -1,7 +1,7 @@
 (dp0
 S'current_sum'
 p1
-I0
+I3
 sS'sums'
 p2
 (lp3

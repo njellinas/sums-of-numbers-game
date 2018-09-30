@@ -1,6 +1,7 @@
 import os
 import sys
 from sums_game import SumsGame
+from emorec_game import EmorecGame
 import pygame
 from pygame.locals import *
 import socket
@@ -99,6 +100,14 @@ class GameRunner(object):
                     pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.sums.playwithsum1'))
                 elif event_name == 'athena.games.sums.playwithsum2':
                     pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.sums.playwithsum2'))
+                
+                # ---------------- EMOREC ---------------- #
+                elif event_name == 'athena.games.emorec.clearcards':
+                    pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.emorec.clearcards'))
+                elif event_name == 'athena.games.emorec.showhappiness':
+                    pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.emorec.showhappiness'))
+                elif event_name == 'athena.games.emorec.showsadness':
+                    pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.emorec.showsadness'))
 
     def send_event(self, event_name, sender, text=None):
         if not self.connected:
@@ -136,6 +145,7 @@ class GameRunner(object):
         clock = pygame.time.Clock()
 
         sumsgame = SumsGame(cfg=cfg, screen=self.screen, gamerunner=self, wizard_mode=self.wizard_mode)
+        emorecgame = EmorecGame(cfg=cfg, screen=self.screen, gamerunner=self)
         game_state = 'idle'
         while True:
             clock.tick(30)
@@ -168,6 +178,10 @@ class GameRunner(object):
                         return
                 if game_state == 'running' and event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                     sumsgame.process_mouse_event()
+                
+                # ------------- EMOREC -------------- #
+                if event.type == GAME_EVENT:
+                    emorecgame.process_game_event(event)
 
 if __name__ == '__main__':
     if sys.argv[-1] == 'woz':

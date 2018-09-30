@@ -10,5 +10,9 @@ cfg = {
     'target_sum': 4,
 
     # Saved game data related configurations
-    'pickle_path': 'child_data'
+    'pickle_path': 'child_data',
+
+    # -------------- EMOREC --------------- #
+    'happy_card': 'sums_game_data/zero.png',
+    'sad_card': 'sums_game_data/one.png',
 }

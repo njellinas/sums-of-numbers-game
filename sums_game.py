@@ -223,7 +223,7 @@ class SumsGame(object):
                 self.cards[key].can_open = True
 
     def end_game(self):
-        pass
+        self.end_turn()
 
     def end_turn(self):
         print('Loading child ' + str(self.child_id) + ' data...')
