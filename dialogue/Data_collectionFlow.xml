@@ -360,6 +360,21 @@
 			<return event="monitor.speech.done"/>
 		</onevent>
 	</state>
+	
+	<state id="agent_audio">
+		<param name="audio" help="The text to speak (can also be provided as a text node)"/>
+		<param name="agent" help="The text to speak (can also be provided as a text node)"/>
+		<var name="action"/>
+		<onentry>
+			<send event="action.speech" 
+					p:audio="audio"
+					p:agent="agent"
+					bindId="action"/>
+		</onentry>
+		<onevent name="monitor.speech.done">
+			<return event="monitor.speech.done"/>
+		</onevent>
+	</state>
 
 	<state id="zeno_animation">
 		<param name="name" help="The text to speak (can also be provided as a text node)"/>
