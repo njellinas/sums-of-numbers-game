@@ -9,6 +9,7 @@ import threading
 import json
 from events import *
 from config import cfg
+import ast
 
 class GameRunner(object):
     """docstring for GameRunner"""
@@ -52,7 +53,7 @@ class GameRunner(object):
     # ------------- THREAD 1 ------------- #
     def connect_to_broker(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        ipaddress = '192.168.2.8'
+        ipaddress = cfg['broker']
         port = 1932
         # Connect the socket to the port where the server is listening
         server_address = (ipaddress, port)
@@ -65,14 +66,15 @@ class GameRunner(object):
 
         message = 'SUBSCRIBE athena.games.** \n'
         self.sock.sendall(message)
-
+        jsonflag = False
+        jsonevent = ''
         for line in self.readlines(self.sock):
             print('line: ', line)
-            if line.startswith("EVENT"):
+            if line.startswith("EVENT") and not jsonflag:
                 data_arr = line.split()
                 event_name = data_arr[1]
                 # ----------- MAIN EVENTS ---------- #
-                if event_name == "athena.games.sums.showcards":
+                if event_name == "athena.games.sums.masterstart":
                     pygame.event.post(pygame.event.Event(START_SUMS, {}))
                 elif event_name == "athena.games.sums.stop":
                     pygame.event.post(pygame.event.Event(STOP_SUMS, {}))
@@ -83,7 +85,8 @@ class GameRunner(object):
                 elif event_name == 'athena.games.sums.disablecards':
                     pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.sums.disablecards'))
                 elif event_name == 'athena.games.sums.robotwrongsum.select':
-                    pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.sums.robotwrongsum.select'))
+                    jsonflag = True
+                    jsonevent = event_name
                 elif event_name == 'athena.games.sums.robotcorrectsum.select':
                     pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.sums.robotcorrectsum.select'))
                 elif event_name == 'athena.games.sums.robotsum.make':
@@ -101,6 +104,14 @@ class GameRunner(object):
                 elif event_name == 'athena.games.sums.playwithsum2':
                     pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.sums.playwithsum2'))
                 
+                # Initialization event
+                elif event_name == 'athena.games.sums.initid':
+                    jsonflag = True
+                    jsonevent = event_name
+                # 
+                elif event_name == 'athena.games.sums.selectequations':
+                    pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.sums.selectequations'))
+
                 # ---------------- EMOREC ---------------- #
                 elif event_name == 'athena.games.emorec.clearcards':
                     pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.emorec.clearcards'))
@@ -108,6 +119,20 @@ class GameRunner(object):
                     pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.emorec.showhappiness'))
                 elif event_name == 'athena.games.emorec.showsadness':
                     pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.emorec.showsadness'))
+            
+            elif jsonflag:
+                if jsonevent == 'athena.games.sums.robotwrongsum.select':
+                    jsonflag = False
+                    dct = ast.literal_eval(line)
+                    text = dct['text']
+                    number = int(text)
+                    pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.sums.robotwrongsum.select', number=number))
+                elif jsonevent == 'athena.games.sums.initid':
+                    jsonflag = False
+                    dct = ast.literal_eval(line)
+                    text = dct['text']
+                    child_id = int(text[0])
+                    pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.sums.initid', child_id=child_id))
 
     def send_event(self, event_name, sender, text=None):
         if not self.connected:
@@ -152,6 +177,7 @@ class GameRunner(object):
             for event in pygame.event.get():
                 if self.wizard_mode:
                     if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE and game_state == 'idle':
+                        sumsgame.read_new_sums_from_pickle()
                         sumsgame.init_game()
                         game_state = 'running'
                         continue
@@ -166,7 +192,6 @@ class GameRunner(object):
                         return
                 else:
                     if event.type == START_SUMS and game_state == 'idle':
-                        sumsgame.init_game()
                         game_state = 'running'
                     if event.type == STOP_SUMS and game_state == 'running':
                         self.clear_screen()

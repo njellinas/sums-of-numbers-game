@@ -4,13 +4,15 @@ from Tkinter import *
 from tkNotebook import Notebook
 import socket
 import sys
+sys.path.append("..")
+from config import cfg
 
 class WizardOfOzRemote(object):
 
 
     def __init__(self):
         #Default settings
-        self.host = "192.168.2.8"
+        self.host = cfg['broker']
         self.port = 1932
 
         self.connect_to_broker()
@@ -31,6 +33,7 @@ class WizardOfOzRemote(object):
         self.sumsTab.focus()
         
         self.buttons = []
+        self.droplists = []
         self.addSumsTab()
         self.addEmorecTab()
 
@@ -41,6 +44,17 @@ class WizardOfOzRemote(object):
             button = Button(tab, text=text, bg='grey', height=2, command= lambda: self.send_event(event, event_text, options,x,y,z,behavior))
         button.grid(row=row, column=column, sticky='EW')
         self.buttons.append(button)
+    
+    def add_droplist(self, tab, max_choice, event, row, column, event_text=None, options=None, x=None, y=None, z=None, big=None, behavior=None):
+        var = StringVar(self.root)
+        var.set(1)
+        choices = range(1, max_choice + 1)
+        droplist = OptionMenu(tab, var, *choices, command= lambda dropvalue: self.send_event(event, dropvalue, options,x,y,z,behavior))
+        droplist.grid(row=row, column=column, sticky='EW')
+        self.droplists.append(droplist)
+    
+    def ok(self, x):
+        print('Value is ', x)
 
     def connect_to_broker(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -101,11 +115,17 @@ class WizardOfOzRemote(object):
         Label(self.sumsTab, text="Set child gender").grid(row=0, column=col)
         self.add_button(self.sumsTab, row=1, column=col, text="Male", event="athena.games.sums.male")
         self.add_button(self.sumsTab, row=2, column=col, text="Female", event="athena.games.sums.female")
+        Label(self.sumsTab, text="Select child").grid(row=4, column=col)
+        self.add_droplist(self.sumsTab, row=5, column=col, max_choice=3, event="athena.games.sums.iristk.childid")
+        Label(self.sumsTab, text="Select session").grid(row=6, column=col)
+        self.add_droplist(self.sumsTab, row=7, column=col, max_choice=20, event="athena.games.sums.iristk.sessionid")
 
-        Label(self.sumsTab, text="Master Switch").grid(row=6, column=col)
-        self.add_button(self.sumsTab, row=7, column=col, text="Start", event="athena.games.sums.showcards")
-        self.add_button(self.sumsTab, row=8, column=col, text="Stop", event="athena.games.sums.stop")
-        self.add_button(self.sumsTab, row=9, column=col, text="Reset cardholder", event="athena.games.sums.resetcardholder")
+        col += 1
+        Label(self.sumsTab, text="Master Switch").grid(row=0, column=col)
+        self.add_button(self.sumsTab, row=2, column=col, text="Stop", event="athena.games.sums.stop")
+        self.add_button(self.sumsTab, row=3, column=col, text="Reset cardholder", event="athena.games.sums.resetcardholder")
+        self.add_button(self.sumsTab, row=8, column=col, text="END SESSION", event="athena.games.sums.endsession")
+
 
         col += 1
         Label(self.sumsTab, text="Switch States Manually").grid(row=0, column=col)
@@ -113,7 +133,7 @@ class WizardOfOzRemote(object):
         self.add_button(self.sumsTab, row=2, column=col, text="Introduction state", event="athena.games.sums.start")
         self.add_button(self.sumsTab, row=3, column=col, text="Child sum state", event="athena.games.sums.childsum")
         self.add_button(self.sumsTab, row=4, column=col, text="Robot wrong sum state", event="athena.games.sums.gotorobotwrongsum")
-        self.add_button(self.sumsTab, row=5, column=col, text="Robot correct sum state", event="athena.games.sums.gotorobotcorrectsum")
+        self.add_button(self.sumsTab, row=5, column=col, text="Robot test state", event="athena.games.sums.gotorobottest")
         self.add_button(self.sumsTab, row=6, column=col, text="Replay state", event="athena.games.sums.gotoreplay")
 
         col += 1

@@ -1,4 +1,7 @@
 cfg = {
+    # Broker
+    'broker': '192.168.0.127',
+
     # Screen related configurations
     'screen_size': None,  # (1024, 768)
     'background_color': (81, 193, 206),

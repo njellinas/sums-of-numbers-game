@@ -24,15 +24,6 @@ class SumsGame(object):
         self.gamerunner = gamerunner
         self.wizard_mode = wizard_mode
         self.child_id = 1
-
-        # ------ Game related parameters -------- #
-        # Get sum1 and sum2 codes
-        with open(os.path.join(cfg['pickle_path'], 'child' + str(self.child_id) + '.pkl'), 'rb') as f:
-            d = pickle.load(f)
-        self.sum_codes = d['sums'][d['current_sum']]
-        # Get sum1 and sum2 tuples of the form (number, cardholder) where cardholder equals 1 or 2
-        self.sum1, self.sum2 = get_playing_sums(codes=self.sum_codes)
-        self.current_sum = self.sum1
     
     def init_game(self):
         global previous_time
@@ -252,7 +243,7 @@ class SumsGame(object):
         # Card selection events
         elif event.name == 'athena.games.sums.robotwrongsum.select':
             open_user_cardholder(self.cards, self.game_dict, self.screen)
-            robot_make_wrong_sum(self.cards, self.game_dict, self.screen)
+            robot_make_wrong_sum(self.cards, self.game_dict, self.screen, number=event.number)
         elif event.name == 'athena.games.sums.robotcorrectsum.select':
             open_user_cardholder(self.cards, self.game_dict, self.screen)
             robot_make_correct_sum(self.cards, self.game_dict, self.screen)
@@ -272,13 +263,27 @@ class SumsGame(object):
         elif event.name == 'athena.games.sums.playwithsum2':
             self.current_sum = self.sum2
             self.init_game()
+        
+        # Initialization event
+        elif event.name == 'athena.games.sums.initid':
+            self.child_id = event.child_id
+            self.read_new_sums_from_pickle()
+            print('------------ GAME INFO ----------- Child id: {}, Playing sums: {} and {}'.format(str(self.child_id), str(self.sum1), str(self.sum2)))
+        
+        elif event.name == 'athena.games.sums.selectequations':
+            equations = str(self.sum_codes[0]) + ',' + str(self.sum_codes[1])
+            self.gamerunner.send_event('athena.games.sums.equations', 'sums_game', equations)
+
 
     def process_mouse_event(self):
-        mouse_pos = pygame.mouse.get_pos()
-        for key, card in self.cards.iteritems():
-            if card.rect.collidepoint(mouse_pos):
-                self.on_card_selected(card)
-                return
+        try:
+            mouse_pos = pygame.mouse.get_pos()
+            for key, card in self.cards.iteritems():
+                if card.rect.collidepoint(mouse_pos):
+                    self.on_card_selected(card)
+                    return
+        except:
+            pass
 
     def on_card_selected(self, card):
         if card.chosen_once == False and card.can_open and not card.chosen and self.game_dict['cardholders_full'] < 2:
