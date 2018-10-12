@@ -96,8 +96,8 @@ class GameRunner(object):
                 # Turn events
                 elif event_name == 'athena.games.sums.endturn':
                     pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.sums.endturn'))
-                elif event_name == 'athena.games.sums.doreplay':
-                    pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.sums.doreplay'))
+                elif event_name == 'athena.games.sums.reloadequations':
+                    pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.sums.reloadequations'))
                 # Sums events
                 elif event_name == 'athena.games.sums.playwithsum1':
                     pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.sums.playwithsum1'))

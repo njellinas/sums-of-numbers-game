@@ -86,7 +86,7 @@ public class ZenoInteraction {
         Animation introAnim;
         AnimationJob introJob;
 
-        String hostName = "192.168.0.106";
+        String hostName = "192.168.0.127";
 
         int portNumber = 1932;
         String inputFromBroker = null;

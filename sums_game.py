@@ -254,7 +254,7 @@ class SumsGame(object):
         # Turn related events
         elif event.name == 'athena.games.sums.endturn':
             self.end_turn()
-        elif event.name == 'athena.games.sums.doreplay':
+        elif event.name == 'athena.games.sums.reloadequations':
             self.read_new_sums_from_pickle()
         # Sums events
         elif event.name == 'athena.games.sums.playwithsum1':
@@ -263,6 +263,8 @@ class SumsGame(object):
         elif event.name == 'athena.games.sums.playwithsum2':
             self.current_sum = self.sum2
             self.init_game()
+        
+
         
         # Initialization event
         elif event.name == 'athena.games.sums.initid':
