@@ -197,7 +197,7 @@ public class ZenoInteraction {
                             waist = new Robot.JointId(myRobot.getRobotId(), new Joint.Id(R25RobotJoints.WAIST));
                             myGoalPositions.put(left_shoulder_roll, new NormalizedDouble(0.7));
                             myGoalPositions.put(left_shoulder_yaw, new NormalizedDouble(0.5));
-                            myGoalPositions.put(waist, new NormalizedDouble(0.6));
+                            myGoalPositions.put(waist, new NormalizedDouble(0.4));
                             myRobot.move(myGoalPositions, 200);
                         }
                         else if (jsonObj.getString("name").equals("zeno_select_card_4")) {
