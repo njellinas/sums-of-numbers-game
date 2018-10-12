@@ -166,6 +166,15 @@ class WizardOfOzRemote(object):
         self.add_button(self.sumsTab, row=2, column=col, text="sad", event="athena.admin.zenosad")
         self.add_button(self.sumsTab, row=3, column=col, text="neutral", event="athena.admin.zenoneutral")
 
+        col += 1
+        Label(self.sumsTab, text="Proposed Action").grid(row=0, column=col)
+        self.add_button(self.sumsTab, row=1, column=col, text="0", event="athena.games.sums.proposedaction", event_text='0')
+        self.add_button(self.sumsTab, row=2, column=col, text="1", event="athena.games.sums.proposedaction", event_text='1')
+        self.add_button(self.sumsTab, row=3, column=col, text="2", event="athena.games.sums.proposedaction", event_text='2')
+        self.add_button(self.sumsTab, row=4, column=col, text="3", event="athena.games.sums.proposedaction", event_text='3')
+        self.add_button(self.sumsTab, row=5, column=col, text="4", event="athena.games.sums.proposedaction", event_text='4')
+
+
     def addEmorecTab(self):
         col = 1
         Label(self.emorecTab, text="Switch states manually").grid(row=0, column=col)
