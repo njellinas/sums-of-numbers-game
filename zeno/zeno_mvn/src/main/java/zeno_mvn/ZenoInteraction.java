@@ -86,7 +86,7 @@ public class ZenoInteraction {
         Animation introAnim;
         AnimationJob introJob;
 
-        String hostName = "192.168.0.127";
+        String hostName = "192.168.0.106";
 
         int portNumber = 1932;
         String inputFromBroker = null;
@@ -149,28 +149,69 @@ public class ZenoInteraction {
                             introJob = myPlayer.playAnimation(introAnim);
                             animLen = introAnim.getLength();
                         MechIO.sleep(500 + animLen);
+                        myGoalPositions.clear();
+                        waist = new Robot.JointId(myRobot.getRobotId(), new Joint.Id(R25RobotJoints.WAIST));
+                        myGoalPositions.put(waist, new NormalizedDouble(0.5));
+                        myRobot.move(myGoalPositions, 200);
 //                        out.println(String.format("EVENT athena.zeno.behavior.done %s\n",event.length()));
 //                        out.println(event);
                         }
-                        else {
-                            left_shoulder_roll = new Robot.JointId(myRobot.getRobotId(), new Joint.Id(R25RobotJoints.LEFT_SHOULDER_ROLL));
-                            left_shoulder_yaw = new Robot.JointId(myRobot.getRobotId(), new Joint.Id(R25RobotJoints.LEFT_SHOULDER_YAW));
+                        else if (jsonObj.getString("name").equals("zeno_select_card_0")) {
+                            myGoalPositions.clear();
                             right_shoulder_roll = new Robot.JointId(myRobot.getRobotId(), new Joint.Id(R25RobotJoints.RIGHT_SHOULDER_ROLL));
                             right_shoulder_yaw = new Robot.JointId(myRobot.getRobotId(), new Joint.Id(R25RobotJoints.RIGHT_SHOULDER_YAW));
                             waist = new Robot.JointId(myRobot.getRobotId(), new Joint.Id(R25RobotJoints.WAIST));
-                            left_wrist = new Robot.JointId(myRobot.getRobotId(), new Joint.Id(R25RobotJoints.LEFT_WRIST_YAW));
                             right_wrist = new Robot.JointId(myRobot.getRobotId(), new Joint.Id(R25RobotJoints.RIGHT_WRIST_YAW));
-                            
-                            myGoalPositions.put(left_shoulder_roll, new NormalizedDouble(0.7));
+                            myGoalPositions.put(right_shoulder_roll, new NormalizedDouble(0.7));
+                            myGoalPositions.put(right_shoulder_yaw, new NormalizedDouble(0.5));
+                            myGoalPositions.put(waist, new NormalizedDouble(0.7));
+                            myGoalPositions.put(right_wrist, new NormalizedDouble(0.0));
                             myRobot.move(myGoalPositions, 200);
+                        }
+                        else if (jsonObj.getString("name").equals("zeno_select_card_1")) {
                             myGoalPositions.clear();
-                            myGoalPositions.put(left_shoulder_yaw, new NormalizedDouble(0.5));
-                            myGoalPositions.put(waist, new NormalizedDouble(0.4));
+                            right_shoulder_roll = new Robot.JointId(myRobot.getRobotId(), new Joint.Id(R25RobotJoints.RIGHT_SHOULDER_ROLL));
+                            right_shoulder_yaw = new Robot.JointId(myRobot.getRobotId(), new Joint.Id(R25RobotJoints.RIGHT_SHOULDER_YAW));
+                            waist = new Robot.JointId(myRobot.getRobotId(), new Joint.Id(R25RobotJoints.WAIST));
+                            right_wrist = new Robot.JointId(myRobot.getRobotId(), new Joint.Id(R25RobotJoints.RIGHT_WRIST_YAW));
+                            myGoalPositions.put(right_shoulder_roll, new NormalizedDouble(0.7));
+                            myGoalPositions.put(right_shoulder_yaw, new NormalizedDouble(0.5));
+                            myGoalPositions.put(waist, new NormalizedDouble(0.6));
+                            myGoalPositions.put(right_wrist, new NormalizedDouble(0.0));
+                            myRobot.move(myGoalPositions, 200);
+                        }
+                        else if (jsonObj.getString("name").equals("zeno_select_card_2")) {
+                            myGoalPositions.clear();
+                            left_shoulder_roll = new Robot.JointId(myRobot.getRobotId(), new Joint.Id(R25RobotJoints.LEFT_SHOULDER_ROLL));
+                            left_shoulder_yaw = new Robot.JointId(myRobot.getRobotId(), new Joint.Id(R25RobotJoints.LEFT_SHOULDER_YAW));
+                            left_wrist = new Robot.JointId(myRobot.getRobotId(), new Joint.Id(R25RobotJoints.LEFT_WRIST_YAW));
+                            myGoalPositions.put(left_shoulder_roll, new NormalizedDouble(0.55));
+                            myGoalPositions.put(left_shoulder_yaw, new NormalizedDouble(0.4));
                             myGoalPositions.put(left_wrist, new NormalizedDouble(0.0));
-
-                            
                             myRobot.move(myGoalPositions, 200);
+                        }
+                        else if (jsonObj.getString("name").equals("zeno_select_card_3")) {
                             myGoalPositions.clear();
+                            left_shoulder_roll = new Robot.JointId(myRobot.getRobotId(), new Joint.Id(R25RobotJoints.LEFT_SHOULDER_ROLL));
+                            left_shoulder_yaw = new Robot.JointId(myRobot.getRobotId(), new Joint.Id(R25RobotJoints.LEFT_SHOULDER_YAW));
+                            waist = new Robot.JointId(myRobot.getRobotId(), new Joint.Id(R25RobotJoints.WAIST));
+                            myGoalPositions.put(left_shoulder_roll, new NormalizedDouble(0.7));
+                            myGoalPositions.put(left_shoulder_yaw, new NormalizedDouble(0.5));
+                            myGoalPositions.put(waist, new NormalizedDouble(0.6));
+                            myRobot.move(myGoalPositions, 200);
+                        }
+                        else if (jsonObj.getString("name").equals("zeno_select_card_4")) {
+                            myGoalPositions.clear();
+                            left_shoulder_roll = new Robot.JointId(myRobot.getRobotId(), new Joint.Id(R25RobotJoints.LEFT_SHOULDER_ROLL));
+                            left_shoulder_yaw = new Robot.JointId(myRobot.getRobotId(), new Joint.Id(R25RobotJoints.LEFT_SHOULDER_YAW));
+                            waist = new Robot.JointId(myRobot.getRobotId(), new Joint.Id(R25RobotJoints.WAIST));
+                            myGoalPositions.put(left_shoulder_roll, new NormalizedDouble(0.7));
+                            myGoalPositions.put(left_shoulder_yaw, new NormalizedDouble(0.5));
+                            myGoalPositions.put(waist, new NormalizedDouble(0.3));
+                            myRobot.move(myGoalPositions, 200);
+                        }
+                        else {
+                            
                         }
                     }
                 }

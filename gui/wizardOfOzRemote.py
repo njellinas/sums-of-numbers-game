@@ -174,6 +174,19 @@ class WizardOfOzRemote(object):
         self.add_button(self.sumsTab, row=4, column=col, text="3", event="athena.games.sums.proposedaction", event_text='3')
         self.add_button(self.sumsTab, row=5, column=col, text="4", event="athena.games.sums.proposedaction", event_text='4')
 
+        col += 1
+        Label(self.sumsTab, text="Zeno Show Numbers").grid(row=0, column=col)
+        self.add_button(self.sumsTab, row=1, column=col, text="Show 0", event="athena.admin.zeno_card_select", event_text='0')
+        self.add_button(self.sumsTab, row=2, column=col, text="Show 1", event="athena.admin.zeno_card_select", event_text='1')
+        self.add_button(self.sumsTab, row=3, column=col, text="Show 2", event="athena.admin.zeno_card_select", event_text='2')
+        self.add_button(self.sumsTab, row=4, column=col, text="Show 3", event="athena.admin.zeno_card_select", event_text='3')
+        self.add_button(self.sumsTab, row=5, column=col, text="Show 4", event="athena.admin.zeno_card_select", event_text='4')
+
+        col += 1
+        Label(self.sumsTab, text="Zeno Reset").grid(row=0, column=col)
+        self.add_button(self.sumsTab, row=1, column=col, text="Reset", event="athena.admin.zenoreset")
+
+
 
     def addEmorecTab(self):
         col = 1
