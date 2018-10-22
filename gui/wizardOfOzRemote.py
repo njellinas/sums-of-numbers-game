@@ -116,7 +116,7 @@ class WizardOfOzRemote(object):
         self.add_button(self.sumsTab, row=1, column=col, text="Male", event="athena.games.sums.male")
         self.add_button(self.sumsTab, row=2, column=col, text="Female", event="athena.games.sums.female")
         Label(self.sumsTab, text="Select child").grid(row=4, column=col)
-        self.add_droplist(self.sumsTab, row=5, column=col, max_choice=3, event="athena.games.sums.iristk.childid")
+        self.add_droplist(self.sumsTab, row=5, column=col, max_choice=5, event="athena.games.sums.iristk.childid")
         Label(self.sumsTab, text="Select session").grid(row=6, column=col)
         self.add_droplist(self.sumsTab, row=7, column=col, max_choice=20, event="athena.games.sums.iristk.sessionid")
 

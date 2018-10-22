@@ -62,7 +62,7 @@ public class ZenoInteraction {
 
         // If running on a robot instead of an avatar:
         //     uncomment the next five lines and change the IP to the robot's IP
-        String ipAddress = "192.168.0.112";
+        String ipAddress = "192.168.1.12";
         UserSettings.setRobotAddress(ipAddress);
         UserSettings.setSpeechAddress(ipAddress);
         UserSettings.setAnimationAddress(ipAddress);
@@ -86,7 +86,7 @@ public class ZenoInteraction {
         Animation introAnim;
         AnimationJob introJob;
 
-        String hostName = "192.168.0.127";
+        String hostName = "192.168.0.103";
 
         int portNumber = 1932;
         String inputFromBroker = null;
