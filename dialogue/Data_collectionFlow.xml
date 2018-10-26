@@ -117,14 +117,12 @@
 			temp = "1" + ',' + card_selected;
 		</exec>
 		<send event="athena.games.sums.reward" p:text="temp"/>
+		<wait msec="5000"/>
 		<if cond="child_gender.equals('male')">
 	<call state="agent_audio" p:audio="'C:\Users\Nick\Documents\Baby Robot\sums-of-numbers-game\wavs\mpravo_eisaipolukalos.wav'" p:agent="'system'"/>
 		<else/>
 	<call state="agent_audio" p:audio="'C:\Users\Nick\Documents\Baby Robot\sums-of-numbers-game\wavs\bravo_eisaipolukali.wav'" p:agent="'system'"/>
 		</if>
-		<call state="zeno_animation" p:name="'IROS_animations/happiness.anim.xml'"/>
-		<wait msec="5000"/>
-		<call state="zeno_animation" p:name="'IROS_animations/neutral.anim.xml'"/>
 	</onevent>
 	<onevent name="athena.games.sums.sumwrong">
 		<exec>
@@ -174,7 +172,7 @@
 		<elseif cond="temp.equals('2')"/>
 			<call state="agent_audio" p:audio="'C:\Users\Nick\Documents\Baby Robot\sums-of-numbers-game\wavs\nomizwdyo.wav'" p:agent="'system'"/>
 		<elseif cond="temp.equals('3')"/>
-			<call state="agent_audio" p:audio="'C:\Users\Nick\Documents\Baby Robot\sums-of-numbers-game\wavs\nomizwmtria.wav'" p:agent="'system'"/>
+			<call state="agent_audio" p:audio="'C:\Users\Nick\Documents\Baby Robot\sums-of-numbers-game\wavs\nomizwtria.wav'" p:agent="'system'"/>
 		<elseif cond="temp.equals('4')"/>
 			<call state="agent_audio" p:audio="'C:\Users\Nick\Documents\Baby Robot\sums-of-numbers-game\wavs\nomizwtessera.wav'" p:agent="'system'"/>
 		</if>
@@ -186,6 +184,7 @@
 			temp = "-1" + ',' + card_selected;
 		</exec>
 		<send event="athena.games.sums.reward" p:text="temp"/>
+		<wait msec="5000"/>
 		<if cond="whosturn.equals('robot')">
 			<wait msec="500"/>
 			<call state="zeno_animation" p:name="'IROS_animations/FitInBox.anim.xml'"/>
@@ -207,8 +206,8 @@
 			temp = "1" + ',' + card_selected;
 		</exec>
 		<send event="athena.games.sums.reward" p:text="temp"/>
+		<wait msec="5000"/>
 	        <call state="agent_audio" p:audio="'C:\Users\Nick\Documents\Baby Robot\sums-of-numbers-game\wavs\bravo_euxaristwgiathvoitheia.wav'" p:agent="'system'"/>
-		<call state="zeno_animation" p:name="'IROS_animations/happiness.anim.xml'"/>
 	</onevent>
 	<onevent name="athena.games.sums.robotwrong.reask1">
 	        <call state="agent_audio" p:audio="'C:\Users\Nick\Documents\Baby Robot\sums-of-numbers-game\wavs\se_parakalw_deikse_mou_to_swsto.wav'" p:agent="'system'"/>
@@ -266,6 +265,7 @@
 			temp = "-1" + ',' + card_selected;
 		</exec>
 		<send event="athena.games.sums.reward" p:text="temp"/>
+		<wait msec="5000"/>
 		<if cond="whosturn.equals('robot')">
 			<wait msec="500"/>
 			<call state="zeno_animation" p:name="'IROS_animations/FitInBox.anim.xml'"/>
@@ -287,13 +287,11 @@
 			temp = "1" + ',' + card_selected;
 		</exec>
 		<send event="athena.games.sums.reward" p:text="temp"/>
+		<wait msec="5000"/>
 		<if cond="whosturn.equals('robot')">
 			<wait msec="500"/>
 			<call state="zeno_animation" p:name="'IROS_animations/FitInBox.anim.xml'"/>
 	        <call state="agent_audio" p:audio="'C:\Users\Nick\Documents\Baby Robot\sums-of-numbers-game\wavs\naitovrikaseeuxaristwpoumevoithasnamathw.wav'" p:agent="'system'"/>
-			<call state="zeno_animation" p:name="'IROS_animations/happiness.anim.xml'"/>
-			<wait msec="5000"/>
-			<call state="zeno_animation" p:name="'IROS_animations/neutral.anim.xml'"/>
 			<send event="athena.games.sums.disablecards"/>
 		</if>
 	</onevent>
@@ -333,6 +331,9 @@
 	</onevent>
 	<onevent name="athena.admin.zenohappy">
 		<call state="zeno_animation" p:name="'IROS_animations/happiness.anim.xml'"/>
+	</onevent>
+	<onevent name="athena.admin.zenosurprise">
+		<call state="zeno_animation" p:name="'IROS_animations/surprise.anim.xml'"/>
 	</onevent>
 	<onevent name="athena.admin.zenosad">
 		<call state="zeno_animation" p:name="'IROS_animations/sadness.anim.xml'"/>

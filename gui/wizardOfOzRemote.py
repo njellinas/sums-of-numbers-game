@@ -163,8 +163,9 @@ class WizardOfOzRemote(object):
         col += 1
         Label(self.sumsTab, text="Zeno controls").grid(row=0, column=col)
         self.add_button(self.sumsTab, row=1, column=col, text="happy", event="athena.admin.zenohappy")
-        self.add_button(self.sumsTab, row=2, column=col, text="sad", event="athena.admin.zenosad")
-        self.add_button(self.sumsTab, row=3, column=col, text="neutral", event="athena.admin.zenoneutral")
+        self.add_button(self.sumsTab, row=2, column=col, text="surprise", event="athena.admin.zenosurprise")
+        self.add_button(self.sumsTab, row=3, column=col, text="sad", event="athena.admin.zenosad")
+        self.add_button(self.sumsTab, row=4, column=col, text="neutral", event="athena.admin.zenoneutral")
 
         col += 1
         Label(self.sumsTab, text="Proposed Action").grid(row=0, column=col)
