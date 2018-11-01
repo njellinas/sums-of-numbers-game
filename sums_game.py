@@ -220,7 +220,7 @@ class SumsGame(object):
         print('Loading child ' + str(self.child_id) + ' data...')
         with open(os.path.join(cfg['pickle_path'], 'child' + str(self.child_id) + '.pkl'), 'rb') as f:
             d = pickle.load(f)
-        d['current_sum'] = (d['current_sum'] + 1) % 5
+        d['current_sum'] = (d['current_sum'] + 1) % 10
         print('Saving child ' + str(self.child_id) + ' data...')
         with open(os.path.join(cfg['pickle_path'], 'child' + str(self.child_id) + '.pkl'), 'wb') as f:
             pickle.dump(obj=d, file=f)

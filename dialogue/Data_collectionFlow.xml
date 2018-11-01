@@ -130,14 +130,14 @@
 			zeno_card = "zeno_select_card_" + temp;
 		</exec>
 		<call state="zeno_animation" p:name="zeno_card"/>
-		<wait msec="500"/>
+		<wait msec="2000"/>
 		<send event="athena.games.sums.robotwrongsum.select" p:text="temp"/>
 	</onevent>
 	<onevent name="athena.games.sums.robotsumready">
 		<exec>
 			temp = asString(event:text);
 		</exec>
-		<wait msec="500"/>
+		<wait msec="2000"/>
 		<send event="athena.games.sums.robotsum.make"/>
 	</onevent>
 	<onevent name="athena.games.sums.sumwrong">
@@ -179,12 +179,12 @@
 			zeno_card = "zeno_select_card_" + temp
 		</exec>
 		<call state="zeno_animation" p:name="zeno_card"/>
-		<wait msec="500"/>
+		<wait msec="2000"/>
 		<send event="athena.games.sums.robotwrongsum.select" p:text="temp"/>
 	</onevent>
 	<onevent name="athena.games.sums.robotsumready">
 		<exec>temp = asString(event:text)</exec>
-		<wait msec="500"/>
+		<wait msec="2000"/>
 		<send event="athena.games.sums.robotsum.make"/>
 	</onevent>
 	<onevent name="athena.games.sums.sumwrong">

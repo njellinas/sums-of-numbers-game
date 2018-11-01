@@ -171,7 +171,48 @@ class WizardOfOzRemote(object):
         col += 1
         Label(self.sumsTab, text="Intro").grid(row=0, column=col)
         self.add_button(self.sumsTab, row=1, column=col, text="Intro 1", event="athena.games.sums.playwav", event_text='intro1')
+        self.add_button(self.sumsTab, row=2, column=col, text="Intro 2", event="athena.games.sums.playwav", event_text='intro2')
+        self.add_button(self.sumsTab, row=3, column=col, text="Intro 3", event="athena.games.sums.playwav", event_text='intro3')
 
+        col += 1
+        Label(self.sumsTab, text="Robot Wrong").grid(row=0, column=col)
+        self.add_button(self.sumsTab, row=1, column=col, text="Begin Robot Wrong", event="athena.games.sums.playwav", event_text='twrathatokanwegw2a')
+        self.add_button(self.sumsTab, row=2, column=col, text="Robot is Wrong", event="athena.games.sums.playwav", event_text='dentoekanaswsta2a')
+        self.add_button(self.sumsTab, row=3, column=col, text="You show me", event="athena.games.sums.playwav", event_text='deiksemouesy2a')
+        self.add_button(self.sumsTab, row=4, column=col, text="You help me", event="athena.games.sums.playwav", event_text='voithisemeesy2a')
+        self.add_button(self.sumsTab, row=5, column=col, text="You help me - plain", event="athena.games.sums.playwav", event_text='voithisemeesy_plain2a')
+
+        # DIMITRA #
+        Label(self.sumsTab, text="Dimitra").grid(row=7, column=col)
+        self.add_button(self.sumsTab, row=8, column=col, text="Sit right", event="athena.games.sums.playwav", event_text='d1')
+        self.add_button(self.sumsTab, row=9, column=col, text="Sit right - plain", event="athena.games.sums.playwav", event_text='d2')
+        Label(self.sumsTab, text="").grid(row=10, column=col)
+        self.add_button(self.sumsTab, row=11, column=col, text="Dimitra's turn", event="athena.games.sums.playwav", event_text='d3')
+        self.add_button(self.sumsTab, row=12, column=col, text="Your turn", event="athena.games.sums.playwav", event_text='d5')
+        Label(self.sumsTab, text="").grid(row=13, column=col)
+        self.add_button(self.sumsTab, row=14, column=col, text="Robot's turn", event="athena.games.sums.playwav", event_text='d4')
+        self.add_button(self.sumsTab, row=15, column=col, text="My turn", event="athena.games.sums.playwav", event_text='d6')
+
+        col += 1
+        Label(self.sumsTab, text="Robot Correct").grid(row=0, column=col)
+        self.add_button(self.sumsTab, row=1, column=col, text="Begin Robot Correct", event="athena.games.sums.playwav", event_text='twrathatokanwegw2a')
+        self.add_button(self.sumsTab, row=2, column=col, text="Robot is Correct", event="athena.games.sums.playwav", event_text='toekanaswsta2a')
+
+        # ANTREAS #
+        Label(self.sumsTab, text="Antreas").grid(row=7, column=col)
+        self.add_button(self.sumsTab, row=8, column=col, text="Tell me Bravo", event="athena.games.sums.playwav", event_text='a1')
+        
+        col += 1
+        Label(self.sumsTab, text="General").grid(row=0, column=col)
+        self.add_button(self.sumsTab, row=1, column=col, text="Continue after waiting time", event="athena.games.sums.continue")
+        self.add_button(self.sumsTab, row=3, column=col, text="Child is correct - male", event="athena.games.sums.playwav", event_text='bravoeisaikalos')
+        self.add_button(self.sumsTab, row=4, column=col, text="Child is correct - female", event="athena.games.sums.playwav", event_text='bravoeisaikali')
+
+        # NIKOLAS #
+        Label(self.sumsTab, text="Nikolas").grid(row=7, column=col)
+        self.add_button(self.sumsTab, row=8, column=col, text="I am sad - Tell me smthng", event="athena.games.sums.playwav", event_text='n1')
+        self.add_button(self.sumsTab, row=9, column=col, text="I am sad - What to do", event="athena.games.sums.playwav", event_text='n2')
+        self.add_button(self.sumsTab, row=10, column=col, text="I am sad - Comfort me", event="athena.games.sums.playwav", event_text='n3')
 
 
     def addEmorecTab(self):
