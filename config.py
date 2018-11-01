@@ -1,6 +1,6 @@
 cfg = {
     # Broker
-    'broker': '192.168.0.103',
+    'broker': '192.168.1.10',
 
     # Screen related configurations
     'screen_size': None,  # (1024, 768)

@@ -133,32 +133,13 @@ class WizardOfOzRemote(object):
         self.add_button(self.sumsTab, row=2, column=col, text="Introduction state", event="athena.games.sums.start")
         self.add_button(self.sumsTab, row=3, column=col, text="Child sum state", event="athena.games.sums.childsum")
         self.add_button(self.sumsTab, row=4, column=col, text="Robot wrong sum state", event="athena.games.sums.gotorobotwrongsum")
-        self.add_button(self.sumsTab, row=5, column=col, text="Robot test state", event="athena.games.sums.gotorobottest")
-        self.add_button(self.sumsTab, row=6, column=col, text="Replay state", event="athena.games.sums.gotoreplay")
+        self.add_button(self.sumsTab, row=5, column=col, text="Robot correct sum state", event="athena.games.sums.gotorobotcorrectsum")
+        # self.add_button(self.sumsTab, row=6, column=col, text="Replay state", event="athena.games.sums.gotoreplay")
 
-        col += 1
-        Label(self.sumsTab, text="Introduction State").grid(row=0, column=col)
-        self.add_button(self.sumsTab, row=1, column=col, text="Child said Yes", event="athena.games.sums.start.respond",
-            event_text="yes")
-        self.add_button(self.sumsTab, row=2, column=col, text="Child said No", event="athena.games.sums.start.respond",
-            event_text="no")
-        
-        col += 1
-        Label(self.sumsTab, text="Child sum state").grid(row=0, column=col)
-        self.add_button(self.sumsTab, row=1, column=col, text="Reask 1", event="athena.games.sums.reask1")
-        self.add_button(self.sumsTab, row=2, column=col, text="Reask 2", event="athena.games.sums.reask2")
-        self.add_button(self.sumsTab, row=3, column=col, text="Reask 3", event="athena.games.sums.reask3")
-
-        col += 1
-        Label(self.sumsTab, text="Robot wrong sum state").grid(row=0, column=col)
-        self.add_button(self.sumsTab, row=1, column=col, text="Reask 1", event="athena.games.sums.robotwrong.reask1")
-        self.add_button(self.sumsTab, row=2, column=col, text="Reask 2", event="athena.games.sums.robotwrong.reask2")
-        self.add_button(self.sumsTab, row=3, column=col, text="Reask 3", event="athena.games.sums.robotwrong.reask3")
-
-        col += 1
-        Label(self.sumsTab, text="Replay state").grid(row=0, column=col)
-        self.add_button(self.sumsTab, row=1, column=col, text="Yes", event="athena.games.sums.replay.yes")
-        self.add_button(self.sumsTab, row=2, column=col, text="No", event="athena.games.sums.replay.no")
+        # col += 1
+        # Label(self.sumsTab, text="Replay state").grid(row=0, column=col)
+        # self.add_button(self.sumsTab, row=1, column=col, text="Yes", event="athena.games.sums.replay.yes")
+        # self.add_button(self.sumsTab, row=2, column=col, text="No", event="athena.games.sums.replay.no")
 
         col += 1
         Label(self.sumsTab, text="Zeno controls").grid(row=0, column=col)
@@ -166,6 +147,7 @@ class WizardOfOzRemote(object):
         self.add_button(self.sumsTab, row=2, column=col, text="surprise", event="athena.admin.zenosurprise")
         self.add_button(self.sumsTab, row=3, column=col, text="sad", event="athena.admin.zenosad")
         self.add_button(self.sumsTab, row=4, column=col, text="neutral", event="athena.admin.zenoneutral")
+        self.add_button(self.sumsTab, row=6, column=col, text="Reset", event="athena.admin.zenoreset")
 
         col += 1
         Label(self.sumsTab, text="Proposed Action").grid(row=0, column=col)
@@ -175,17 +157,20 @@ class WizardOfOzRemote(object):
         self.add_button(self.sumsTab, row=4, column=col, text="3", event="athena.games.sums.proposedaction", event_text='3')
         self.add_button(self.sumsTab, row=5, column=col, text="4", event="athena.games.sums.proposedaction", event_text='4')
 
-        col += 1
-        Label(self.sumsTab, text="Zeno Show Numbers").grid(row=0, column=col)
-        self.add_button(self.sumsTab, row=1, column=col, text="Show 0", event="athena.admin.zeno_card_select", event_text='0')
-        self.add_button(self.sumsTab, row=2, column=col, text="Show 1", event="athena.admin.zeno_card_select", event_text='1')
-        self.add_button(self.sumsTab, row=3, column=col, text="Show 2", event="athena.admin.zeno_card_select", event_text='2')
-        self.add_button(self.sumsTab, row=4, column=col, text="Show 3", event="athena.admin.zeno_card_select", event_text='3')
-        self.add_button(self.sumsTab, row=5, column=col, text="Show 4", event="athena.admin.zeno_card_select", event_text='4')
+        # col += 1
+        # Label(self.sumsTab, text="Zeno Show Numbers").grid(row=0, column=col)
+        # self.add_button(self.sumsTab, row=1, column=col, text="Show 0", event="athena.admin.zeno_card_select", event_text='0')
+        # self.add_button(self.sumsTab, row=2, column=col, text="Show 1", event="athena.admin.zeno_card_select", event_text='1')
+        # self.add_button(self.sumsTab, row=3, column=col, text="Show 2", event="athena.admin.zeno_card_select", event_text='2')
+        # self.add_button(self.sumsTab, row=4, column=col, text="Show 3", event="athena.admin.zeno_card_select", event_text='3')
+        # self.add_button(self.sumsTab, row=5, column=col, text="Show 4", event="athena.admin.zeno_card_select", event_text='4')
 
         col += 1
-        Label(self.sumsTab, text="Zeno Reset").grid(row=0, column=col)
-        self.add_button(self.sumsTab, row=1, column=col, text="Reset", event="athena.admin.zenoreset")
+        Label(self.sumsTab, text="                    ").grid(row=0, column=col)
+
+        col += 1
+        Label(self.sumsTab, text="Intro").grid(row=0, column=col)
+        self.add_button(self.sumsTab, row=1, column=col, text="Intro 1", event="athena.games.sums.playwav", event_text='intro1')
 
 
 
