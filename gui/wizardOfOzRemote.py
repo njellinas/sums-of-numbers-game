@@ -171,10 +171,10 @@ class WizardOfOzRemote(object):
         col += 1
         Label(self.sumsTab, text="Intro").grid(row=0, column=col)
         self.add_button(self.sumsTab, row=1, column=col, text="Intro 1 - directive", event="athena.games.sums.playwav", event_text='intro1-directive')
-        self.add_button(self.sumsTab, row=1, column=col, text="Intro 1 - neutral", event="athena.games.sums.playwav", event_text='intro1-neutral')
-        self.add_button(self.sumsTab, row=1, column=col, text="Intro 1 - please", event="athena.games.sums.playwav", event_text='intro1-please')
-        self.add_button(self.sumsTab, row=2, column=col, text="Intro 2", event="athena.games.sums.playwav", event_text='intro2')
-        self.add_button(self.sumsTab, row=3, column=col, text="Intro 3", event="athena.games.sums.playwav", event_text='intro3')
+        self.add_button(self.sumsTab, row=2, column=col, text="Intro 1 - neutral", event="athena.games.sums.playwav", event_text='intro1-neutral')
+        self.add_button(self.sumsTab, row=3, column=col, text="Intro 1 - please", event="athena.games.sums.playwav", event_text='intro1-please')
+        self.add_button(self.sumsTab, row=4, column=col, text="Intro 2", event="athena.games.sums.playwav", event_text='intro2')
+        self.add_button(self.sumsTab, row=5, column=col, text="Intro 3", event="athena.games.sums.playwav", event_text='intro3')
 
         col += 1
         Label(self.sumsTab, text="Robot Wrong").grid(row=0, column=col)
