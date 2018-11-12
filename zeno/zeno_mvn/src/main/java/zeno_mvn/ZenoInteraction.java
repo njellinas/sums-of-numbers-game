@@ -132,7 +132,7 @@ public class ZenoInteraction {
 //                        out.println(String.format("EVENT athena.zeno.behavior.done %s\n",event.length()));
 //                        out.println(event);
                         }
-                        else if (jsonObj.getString("name").equals("IROS_animations/surprise.anim.xml")) {
+                        else if (jsonObj.getString("name").equals("IROS_animations/victory.xml")) {
                             // play the animation defined in the xml file
                             introAnim
                                     = MechIO.loadAnimation(jsonObj.getString("name"));

@@ -254,7 +254,7 @@
 		<call state="zeno_animation" p:name="'IROS_animations/happiness.anim.xml'"/>
 	</onevent>
 	<onevent name="athena.admin.zenosurprise">
-		<call state="zeno_animation" p:name="'IROS_animations/surprise.anim.xml'"/>
+		<call state="zeno_animation" p:name="'IROS_animations/victory.xml'"/>
 	</onevent>
 	<onevent name="athena.admin.zenosad">
 		<call state="zeno_animation" p:name="'IROS_animations/sadness.anim.xml'"/>
