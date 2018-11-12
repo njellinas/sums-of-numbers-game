@@ -239,6 +239,12 @@
 		</exec>
 		<call state="agent_audio" p:audio="temp" p:agent="'system'"/>
 	</onevent>
+    <onevent name="athena.games.sums.playemotionwav">
+        <exec>
+            temp = "C:\\Users\\Nick\\Documents\\Baby Robot\\sums-of-numbers-game\\wavs-emotion\\" + asString(event:text) + ".wav";
+        </exec>
+        <call state="agent_audio" p:audio="temp" p:agent="'system'"/>
+    </onevent>
 	<onevent name="athena.games.sums.card_selected">
 		<exec>
 			card_selected = asString(event:text);
@@ -253,6 +259,9 @@
 	<onevent name="athena.admin.zenosad">
 		<call state="zeno_animation" p:name="'IROS_animations/sadness.anim.xml'"/>
 	</onevent>
+    <onevent name="athena.admin.zenofear">
+        <call state="zeno_animation" p:name="'IROS_animations/fear.anim.xml'"/>
+    </onevent>
 	<onevent name="athena.admin.zenoneutral">
 		<call state="zeno_animation" p:name="'IROS_animations/neutral.anim.xml'"/>
 	</onevent>

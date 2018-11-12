@@ -152,6 +152,16 @@ public class ZenoInteraction {
 //                        out.println(String.format("EVENT athena.zeno.behavior.done %s\n",event.length()));
 //                        out.println(event);
                         }
+                        else if (jsonObj.getString("name").equals("IROS_animations/fear.anim.xml")) {
+                            // play the animation defined in the xml file
+                            introAnim
+                                    = MechIO.loadAnimation(jsonObj.getString("name"));
+                            introJob = myPlayer.playAnimation(introAnim);
+                            animLen = introAnim.getLength();
+                        MechIO.sleep(500 + animLen);
+//                        out.println(String.format("EVENT athena.zeno.behavior.done %s\n",event.length()));
+//                        out.println(event);
+                        }
                         else if (jsonObj.getString("name").equals("IROS_animations/FitInBox.anim.xml")) {
                             // play the animation defined in the xml file
                             introAnim

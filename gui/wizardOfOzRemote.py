@@ -221,13 +221,12 @@ class WizardOfOzRemote(object):
 
     def addEmorecTab(self):
         col = 1
-        Label(self.emorecTab, text="Switch states manually").grid(row=0, column=col)
-        self.add_button(self.emorecTab, row=1, column=col, text="Emorec_1 - Happy", event="athena.games.emorec.gotoemorec1")
-        self.add_button(self.emorecTab, row=2, column=col, text="Emorec_2 - Happy card", event="athena.games.emorec.gotoemorec2")
-        self.add_button(self.emorecTab, row=3, column=col, text="Emorec_3 - Happy Zeno", event="athena.games.emorec.gotoemorec3")
-        self.add_button(self.emorecTab, row=4, column=col, text="Emorec_4 - Sad", event="athena.games.emorec.gotoemorec4")
-        self.add_button(self.emorecTab, row=5, column=col, text="Emorec_5 - Sad card", event="athena.games.emorec.gotoemorec5")
-        self.add_button(self.emorecTab, row=6, column=col, text="Emorec_6 - Sad Zeno", event="athena.games.emorec.gotoemorec6")
+        Label(self.sumsTab, text="Zeno controls").grid(row=0, column=col)
+        self.add_button(self.sumsTab, row=1, column=col, text="happy", event="athena.admin.zenohappy")
+        self.add_button(self.sumsTab, row=3, column=col, text="sad", event="athena.admin.zenosad")
+        self.add_button(self.sumsTab, row=3, column=col, text="fear", event="athena.admin.zenofear")
+        self.add_button(self.sumsTab, row=4, column=col, text="neutral", event="athena.admin.zenoneutral")
+        self.add_button(self.sumsTab, row=6, column=col, text="Reset", event="athena.admin.zenoreset")
 
         col += 1
         Label(self.emorecTab, text="Card controls").grid(row=0, column=col)
@@ -236,9 +235,33 @@ class WizardOfOzRemote(object):
         self.add_button(self.emorecTab, row=3, column=col, text="Show sadness", event="athena.games.emorec.showsadness")
 
         col += 1
-        Label(self.emorecTab, text="Child behavior").grid(row=0, column=col)
-        self.add_button(self.emorecTab, row=1, column=col, text="Correct", event="athena.games.emorec.correct", event_text="yes")
-        self.add_button(self.emorecTab, row=2, column=col, text="Wrong", event="athena.games.emorec.correct", event_text="no")
+        Label(self.emorecTab, text="Show me").grid(row=0, column=col)
+        self.add_button(self.sumsTab, row=1, column=col, text="Show me in your face happiness", event="athena.games.sums.playemotionwav", event_text='r1-happy')
+        self.add_button(self.sumsTab, row=2, column=col, text="Show me in your face sadness", event="athena.games.sums.playemotionwav", event_text='r1-sad')
+        self.add_button(self.sumsTab, row=3, column=col, text="Show me in your face fear", event="athena.games.sums.playemotionwav", event_text='r1-fear')
+        self.add_button(self.sumsTab, row=4, column=col, text="Show me in your face happiness plain", event="athena.games.sums.playemotionwav", event_text='r1-happy-2')
+        self.add_button(self.sumsTab, row=5, column=col, text="Show me in your face sadness plain", event="athena.games.sums.playemotionwav", event_text='r1-sad-2')
+        self.add_button(self.sumsTab, row=6, column=col, text="Show me in your face fear plain", event="athena.games.sums.playemotionwav", event_text='r1-fear-2')
+
+        self.add_button(self.sumsTab, row=8, column=col, text="Show me in your face - picture", event="athena.games.sums.playemotionwav", event_text='r2')
+
+        col += 1
+        Label(self.emorecTab, text="Bravo").grid(row=0, column=col)
+        self.add_button(self.sumsTab, row=1, column=col, text="Bravo male", event="athena.games.sums.playemotionwav", event_text='bravoeisaikalos')
+        self.add_button(self.sumsTab, row=2, column=col, text="Bravo female", event="athena.games.sums.playemotionwav", event_text='bravoeisaikali')
+        self.add_button(self.sumsTab, row=3, column=col, text="Bravo - plain", event="athena.games.sums.playemotionwav", event_text='bravo')
+        self.add_button(self.sumsTab, row=4, column=col, text="Bravo less expressive", event="athena.games.sums.playemotionwav", event_text='bravo-less-expressive')
+
+        col += 1
+        Label(self.emorecTab, text="Look at me").grid(row=0, column=col)
+        self.add_button(self.sumsTab, row=1, column=col, text="Look at me - happy", event="athena.games.sums.playemotionwav", event_text='r3-happy')
+        self.add_button(self.sumsTab, row=2, column=col, text="Look at me - sad", event="athena.games.sums.playemotionwav", event_text='r3-sad')
+        self.add_button(self.sumsTab, row=3, column=col, text="Look at me - fear", event="athena.games.sums.playemotionwav", event_text='r3-fear')
+        self.add_button(self.sumsTab, row=4, column=col, text="Look at me do the same- happy", event="athena.games.sums.playemotionwav", event_text='r4-happy')
+        self.add_button(self.sumsTab, row=5, column=col, text="Look at me do the same - sad", event="athena.games.sums.playemotionwav", event_text='r4-sad')
+        self.add_button(self.sumsTab, row=6, column=col, text="Look at me do the same - fear", event="athena.games.sums.playemotionwav", event_text='r4-fear')
+
+        
 
     ## RUN PROGRAM ##
     def run(self):
