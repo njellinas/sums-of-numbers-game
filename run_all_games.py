@@ -115,10 +115,20 @@ class GameRunner(object):
                 # ---------------- EMOREC ---------------- #
                 elif event_name == 'athena.games.emorec.clearcards':
                     pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.emorec.clearcards'))
-                elif event_name == 'athena.games.emorec.showhappiness':
-                    pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.emorec.showhappiness'))
-                elif event_name == 'athena.games.emorec.showsadness':
-                    pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.emorec.showsadness'))
+                elif event_name == 'athena.games.emorec.showhappinessDim':
+                    pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.emorec.showhappinessDim'))
+                elif event_name == 'athena.games.emorec.showsadnessDim':
+                    pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.emorec.showsadnessDim'))
+                elif event_name == 'athena.games.emorec.showfearDim':
+                    pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.emorec.showfearDim'))
+                elif event_name == 'athena.games.emorec.showangerDim':
+                    pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.emorec.showangerDim'))
+                elif event_name == 'athena.games.emorec.showsadnessAnd':
+                    pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.emorec.showsadnessAnd'))
+                elif event_name == 'athena.games.emorec.showfearAnd':
+                    pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.emorec.showfearAnd'))
+                elif event_name == 'athena.games.emorec.showangerAnd':
+                    pygame.event.post(pygame.event.Event(GAME_EVENT, name='athena.games.emorec.showangerAnd'))
             
             elif jsonflag:
                 if jsonevent == 'athena.games.sums.robotwrongsum.select':

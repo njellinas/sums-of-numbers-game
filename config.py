@@ -16,6 +16,11 @@ cfg = {
     'pickle_path': 'child_data',
 
     # -------------- EMOREC --------------- #
-    'happy_card': 'sums_game_data/zero.png',
-    'sad_card': 'sums_game_data/one.png',
+    'happyDim_card': 'sums_game_data/HappyDim.jpg',
+    'sadDim_card': 'sums_game_data/SadDim.jpg',
+    'fearDim_card': 'sums_game_data/FearDim.jpg',
+    'angerDim_card': 'sums_game_data/AngerDim.jpg',
+    'sadAnd_card': 'sums_game_data/SadAnd.jpg',
+    'fearAnd_card': 'sums_game_data/FearAnd.jpg',
+    'angerAnd_card': 'sums_game_data/AngerAnd.jpg',
 }

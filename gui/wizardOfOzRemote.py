@@ -231,8 +231,14 @@ class WizardOfOzRemote(object):
         col += 1
         Label(self.emorecTab, text="Card controls").grid(row=0, column=col)
         self.add_button(self.emorecTab, row=1, column=col, text="Clear cards", event="athena.games.emorec.clearcards")
-        self.add_button(self.emorecTab, row=2, column=col, text="Show happiness", event="athena.games.emorec.showhappiness")
-        self.add_button(self.emorecTab, row=3, column=col, text="Show sadness", event="athena.games.emorec.showsadness")
+        self.add_button(self.emorecTab, row=2, column=col, text="Show happiness Dimitra", event="athena.games.emorec.showhappinessDim")
+        self.add_button(self.emorecTab, row=3, column=col, text="Show sadness Dimitra", event="athena.games.emorec.showsadnessDim")
+        self.add_button(self.emorecTab, row=4, column=col, text="Show fear Dimitra", event="athena.games.emorec.showfearDim")
+        self.add_button(self.emorecTab, row=5, column=col, text="Show anger Dimitra", event="athena.games.emorec.showangerDim")
+
+        self.add_button(self.emorecTab, row=6, column=col, text="Show sadness Antreas", event="athena.games.emorec.showsadnessAnd")
+        self.add_button(self.emorecTab, row=7, column=col, text="Show fear Antreas", event="athena.games.emorec.showfearAnd")
+        self.add_button(self.emorecTab, row=8, column=col, text="Show anger Antreas", event="athena.games.emorec.showangerAnd")
 
         col += 1
         Label(self.emorecTab, text="Show me").grid(row=0, column=col)

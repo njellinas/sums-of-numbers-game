@@ -24,24 +24,74 @@ class EmorecGame(object):
     def process_game_event(self, event):
         if event.name == 'athena.games.emorec.clearcards':
             self.clear_cards()
-        elif event.name == 'athena.games.emorec.showhappiness':
-            self.show_happiness_card()
-        elif event.name == 'athena.games.emorec.showsadness':
-            self.show_sadness_card()
+        elif event.name == 'athena.games.emorec.showhappinessDim':
+            self.show_happinessDim_card()
+        elif event.name == 'athena.games.emorec.showsadnessDim':
+            self.show_sadnessDim_card()
+        elif event.name == 'athena.games.emorec.showfearDim':
+            self.show_fearDim_card()
+        elif event.name == 'athena.games.emorec.showangerDim':
+            self.show_angerDim_card()
+        elif event.name == 'athena.games.emorec.showsadnessAnd':
+            self.show_sadnessAnd_card()
+        elif event.name == 'athena.games.emorec.showfearAnd':
+            self.show_fearAnd_card()
+        elif event.name == 'athena.games.emorec.showangerAnd':
+            self.show_angerAnd_card()
 
-    def show_happiness_card(self):
+    def show_happinessDim_card(self):
         pygame.display.set_caption('Emorec Game')
         cardback = self.cfg['cardback']
 
-        card = Card(0, self.cfg['happy_card'], cardback,
+        card = Card(0, self.cfg['happyDim_card'], cardback,
                     (self.card_posx, self.card_posy), (self.cw, self.ch), self.gamerunner)
         card.draw(self.screen)
 
-    def show_sadness_card(self):
+    def show_sadnessDim_card(self):
         pygame.display.set_caption('Emorec Game')
         cardback = self.cfg['cardback']
 
-        card = Card(1, self.cfg['sad_card'], cardback,
+        card = Card(1, self.cfg['sadDim_card'], cardback,
+                    (self.card_posx, self.card_posy), (self.cw, self.ch), self.gamerunner)
+        card.draw(self.screen)
+    
+    def show_sadnessAnd_card(self):
+        pygame.display.set_caption('Emorec Game')
+        cardback = self.cfg['cardback']
+
+        card = Card(1, self.cfg['sadAnd_card'], cardback,
+                    (self.card_posx, self.card_posy), (self.cw, self.ch), self.gamerunner)
+        card.draw(self.screen)
+    
+    def show_fearDim_card(self):
+        pygame.display.set_caption('Emorec Game')
+        cardback = self.cfg['cardback']
+
+        card = Card(1, self.cfg['fearDim_card'], cardback,
+                    (self.card_posx, self.card_posy), (self.cw, self.ch), self.gamerunner)
+        card.draw(self.screen)
+    
+    def show_fearAnd_card(self):
+        pygame.display.set_caption('Emorec Game')
+        cardback = self.cfg['cardback']
+
+        card = Card(1, self.cfg['fearAnd_card'], cardback,
+                    (self.card_posx, self.card_posy), (self.cw, self.ch), self.gamerunner)
+        card.draw(self.screen)
+    
+    def show_angerDim_card(self):
+        pygame.display.set_caption('Emorec Game')
+        cardback = self.cfg['cardback']
+
+        card = Card(1, self.cfg['angerDim_card'], cardback,
+                    (self.card_posx, self.card_posy), (self.cw, self.ch), self.gamerunner)
+        card.draw(self.screen)
+    
+    def show_angerAnd_card(self):
+        pygame.display.set_caption('Emorec Game')
+        cardback = self.cfg['cardback']
+
+        card = Card(1, self.cfg['angerAnd_card'], cardback,
                     (self.card_posx, self.card_posy), (self.cw, self.ch), self.gamerunner)
         card.draw(self.screen)
 
