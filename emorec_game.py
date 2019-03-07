@@ -16,8 +16,8 @@ class EmorecGame(object):
         self.gamerunner = gamerunner
         # Screen size
         self.w, self.h = pygame.display.get_surface().get_size()
-        self.cw = int(0.2 * self.w)
-        self.ch = int(0.5 * self.h)
+        self.cw = int(0.4 * self.w)
+        self.ch = int(0.4 * self.h)
         self.card_posx = int((self.w - self.cw) / 2)
         self.card_posy = int((self.h - self.ch) / 2)
     
