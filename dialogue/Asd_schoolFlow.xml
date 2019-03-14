@@ -178,6 +178,8 @@
 		<call state="agent_audio" p:audio="'C:\Users\slp\Documents\sums-of-numbers-game\wavs\bravoeisaikali.wav'" p:agent="'system'"/>
 		<send event="athena.games.sums.disablecards"/>
 		<wait msec="3500"/>
+		<call state="zeno_animation" p:name="'IROS_animations/FitInBox.anim.xml'"/>
+		<call state="zeno_animation" p:name="'IROS_animations/neutral.anim.xml'"/>
 		<goto state="Correct_Robot_Sum"/>
 	</onevent>
 </state>
@@ -235,7 +237,7 @@
 		<wait msec="4500"/>
 		<wait msec="1500"/>
 		<send event="athena.games.sums.stop"/>
-		<goto state="Sums_Start"/>
+		<goto state="Child_Sum"/>
 		<!-- <send event="athena.games.sums.resetcardholder"/> -->
 	</onevent>
 </state>
