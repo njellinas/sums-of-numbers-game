@@ -53,11 +53,13 @@
 		</onevent>
 	</state>
 
-	<state id="Sums_Start" extends="Dialog">
+<state id="Sums_Start" extends="Dialog">
 	<onentry>
 		<send event="athena.games.sums.masterstart"/>
 		<exec>temp = child_id + ',' + session_id</exec>
 		<send event="athena.games.sums.initid" p:text="temp"/>
+		<wait msec="2000"/>
+		<goto state="Child_Sum"/>
 	</onentry>
 </state>
 
@@ -231,6 +233,9 @@
 		<wait msec="500"/>
 		<call state="zeno_animation" p:name="'IROS_animations/happiness.anim.xml'"/>
 		<wait msec="4500"/>
+		<wait msec="1500"/>
+		<send event="athena.games.sums.stop"/>
+		<goto state="Sums_Start"/>
 		<!-- <send event="athena.games.sums.resetcardholder"/> -->
 	</onevent>
 </state>
