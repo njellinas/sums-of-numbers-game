@@ -233,11 +233,13 @@
 		<send event="athena.games.sums.disablecards"/>
 		<call state="zeno_animation" p:name="'IROS_animations/FitInBox.anim.xml'"/>
 		<wait msec="500"/>
+		<call state="agent_audio" p:audio="'C:\Users\slp\Documents\sums-of-numbers-game\wavs\a1.wav'" p:agent="'system'"/>
+		<wait msec="3000"/>
 		<call state="zeno_animation" p:name="'IROS_animations/happiness.anim.xml'"/>
 		<wait msec="4500"/>
 		<wait msec="1500"/>
 		<send event="athena.games.sums.stop"/>
-		<goto state="Child_Sum"/>
+		<goto state="Sums_Start"/>
 		<!-- <send event="athena.games.sums.resetcardholder"/> -->
 	</onevent>
 </state>
