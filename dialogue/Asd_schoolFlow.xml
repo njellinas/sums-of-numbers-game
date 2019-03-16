@@ -109,6 +109,8 @@
 			temp = "-1" + ',' + card_selected;
 		</exec>
 		<send event="athena.games.sums.reward" p:text="temp"/>
+		<wait msec="2000"/>
+		<send event="athena.games.sums.resetcardholder"/>
 	</onevent>
 	<onevent name="athena.games.sums.continue">
 		<send event="athena.games.sums.resetcardholder"/>
@@ -154,14 +156,15 @@
 			temp = "-1" + ',' + card_selected;
 		</exec>
 		<wait msec="1000"/>
+		<call state="zeno_animation" p:name="'IROS_animations/FitInBox.anim.xml'"/>
+		<wait msec="2000"/>
 		<call state="agent_audio" p:audio="'C:\Users\slp\Documents\sums-of-numbers-game\wavs\dentoekanaswsta2a.wav'" p:agent="'system'"/>
 		<send event="athena.games.sums.reward" p:text="temp"/>
 		<call state="zeno_animation" p:name="'IROS_animations/sadness.anim.xml'"/>
 		<wait msec="4500"/>
 		<send event="athena.games.sums.resetcardholder"/>
-		<call state="zeno_animation" p:name="'IROS_animations/FitInBox.anim.xml'"/>
 		<call state="zeno_animation" p:name="'IROS_animations/neutral.anim.xml'"/>
-		<wait msec="7000"/>
+		<wait msec="5000"/>
 		<call state="agent_audio" p:audio="'C:\Users\slp\Documents\sums-of-numbers-game\wavs\voithisemeesy_plain2a.wav'" p:agent="'system'"/>
 	</onevent>
 	<onevent name="athena.games.sums.continue">
