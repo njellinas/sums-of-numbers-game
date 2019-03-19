@@ -363,32 +363,43 @@
 	<state id="Emorec_1" extends="Dialog">
 		<onentry>
 			<send event="athena.games.emorec.clearcards"/>
-			<call state="agent_audio" p:audio="'C:\Users\kinect_user\Desktop\ENG wavs for emotions\Show+me+in+your+face+how+will+you+do+when+you+are+happy%3F.wav'" p:agent="'system'"/>
+			<call state="agent_audio" p:audio="'C:\Users\slp\Documents\sums-of-numbers-game\wavs-emotion\r1-happy.wav'" p:agent="'system'"/>
+			<wait msec="2000"/>
+			<send event="athena.emotion.listen"/>
 		</onentry>
-		<onevent name="athena.games.emorec.correct" cond="event:text!=null">
-			<if cond="(event:text).equals('yes')">	
-			    <call state="agent_audio" p:audio="'C:\Users\kinect_user\Desktop\ENG wavs for emotions\Great%21+Well+Done%21.wav'" p:agent="'system'"/>
-			
-				<call state="zeno_animation" p:name="'IROS_animations/happiness.anim.xml'"/>			
-			<else/>
-				<goto state="Emorec_2"/>
-			</if>
+		<onevent name="athena.emotion.recognized_english" cond="count==1 and (event:text).equals('Happiness')">
+			<wait msec="500"/>
+			<call state="agent_audio" p:audio="'C:\Users\slp\Documents\sums-of-numbers-game\wavs-emotion\bravoeisaikali.wav'" p:agent="'system'"/>
+			<wait msec="2000"/>
+			<call state="agent_audio" p:audio="'C:\Users\slp\Documents\sums-of-numbers-game\wavs-emotion\r4-happy.wav'" p:agent="'system'"/>
+			<wait msec="1000"/>
+			<call state="zeno_animation" p:name="'IROS_animations/happiness.anim.xml'"/>
+			<wait msec="5000"/>
+			<goto state="Emorec_2"/>
+		</onevent>
+		<onevent name="athena.emotion.recognized_english" cond="count==1 and ! (event:text).equals('Happiness')">
+			<send event="athena.emotion.listen"/>
 		</onevent>
 	</state>	
 
 	<state id="Emorec_2" extends="Dialog">
 		<onentry>
-			<send event="athena.games.emorec.showhappiness"/>
-			<call state="agent_audio" p:audio="'C:\Users\kinect_user\Desktop\ENG wavs for emotions\Look+at+the+card.+This+is+joy.+Can+you+show+me+how+you+are+happy%3F.wav'" p:agent="'system'"/>
+			<send event="athena.games.emorec.clearcards"/>
+			<call state="agent_audio" p:audio="'C:\Users\slp\Documents\sums-of-numbers-game\wavs-emotion\r1-sad.wav'" p:agent="'system'"/>
+			<wait msec="2000"/>
+			<send event="athena.emotion.listen"/>
 		</onentry>
-		<onevent name="athena.games.emorec.correct" cond="event:text!=null">
-			<if cond="(event:text).equals('yes')">	
-			    <call state="agent_audio" p:audio="'C:\Users\kinect_user\Desktop\ENG wavs for emotions\Great%21+Well+Done%21.wav'" p:agent="'system'"/>
-			
-				<call state="zeno_animation" p:name="'IROS_animations/happiness.anim.xml'"/>				
-			<else/>
-				<goto state="Emorec_3"/>
-			</if>
+		<onevent name="athena.emotion.recognized_english" cond="count==1 and (event:text).equals('Sadness')">
+			<wait msec="500"/>
+			<call state="agent_audio" p:audio="'C:\Users\slp\Documents\sums-of-numbers-game\wavs-emotion\bravo.wav'" p:agent="'system'"/>
+			<wait msec="2000"/>
+			<call state="agent_audio" p:audio="'C:\Users\slp\Documents\sums-of-numbers-game\wavs-emotion\r4-sad.wav'" p:agent="'system'"/>
+			<wait msec="1000"/>
+			<call state="zeno_animation" p:name="'IROS_animations/sadness.anim.xml'"/>
+			<wait msec="5000"/>
+		</onevent>
+		<onevent name="athena.emotion.recognized_english" cond="count==1 and ! (event:text).equals('Sadness')">
+			<send event="athena.emotion.listen"/>
 		</onevent>
 	</state>	
 

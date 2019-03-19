@@ -222,10 +222,11 @@ class WizardOfOzRemote(object):
     def addEmorecTab(self):
         col = 1
         Label(self.emorecTab, text="Zeno controls").grid(row=0, column=col)
-        self.add_button(self.emorecTab, row=1, column=col, text="happy", event="athena.admin.zenohappy")
-        self.add_button(self.emorecTab, row=2, column=col, text="sad", event="athena.admin.zenosad")
-        self.add_button(self.emorecTab, row=3, column=col, text="fear", event="athena.admin.zenofear")
-        self.add_button(self.emorecTab, row=4, column=col, text="neutral", event="athena.admin.zenoneutral")
+        self.add_button(self.emorecTab, row=1, column=col, text="Start", event="athena.games.emorec.gotoemorec1")
+        self.add_button(self.emorecTab, row=2, column=col, text="happy", event="athena.admin.zenohappy")
+        self.add_button(self.emorecTab, row=3, column=col, text="sad", event="athena.admin.zenosad")
+        self.add_button(self.emorecTab, row=4, column=col, text="fear", event="athena.admin.zenofear")
+        self.add_button(self.emorecTab, row=5, column=col, text="neutral", event="athena.admin.zenoneutral")
         self.add_button(self.emorecTab, row=6, column=col, text="Reset", event="athena.admin.zenoreset")
 
         col += 1
