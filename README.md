@@ -13,9 +13,11 @@
 - To run, execute in the terminal: `python wizardOfOzRemote.py`
 
 ## How to run
-1) Copy the dialogue from dialogue/Data_CollectionFlow.xml
-2) open a iristk broker
-3) go to gui, and run python wizardOfOzRemote.py
-4) run python run_all_games.py
-5) compile and run the eclipse java script
-6) build and run the zeno maven project
+1) Copy the dialogue from dialogue/Data_CollectionFlow.xml to the respective IrisTK project folder
+2) Compile the flow with the IrisTK compile tool
+3) Open an IrisTK broker (`iristk broker`)
+4) Set the broker address in the `config.py` file at the `broker` entry
+5) Open the GUI by running `python wizardOfOzRemote.py` inside the `gui` folder
+6) Run `python run_all_games.py`
+7) Run the IrisTK flow from Eclipse
+8) Open the `zeno/zeno_mvn` Maven project in NetBeans, build it and run it
