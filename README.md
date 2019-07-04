@@ -1,10 +1,3 @@
-## Sums of 4
-
-- start event_name = athena.games.sums.start
-- stop event_name = athena.games.sums.stop
-
-- Game state = SUMS
-
 ## Sums of numbers game
 - Run the `prepare_sum_objects.py` where the order of the sums to be played by each child will be saved as pickle files
 - Run the main game with `python run_all_games.py`. By giving the argument *woz* the game enters in Wizard of Oz mode
